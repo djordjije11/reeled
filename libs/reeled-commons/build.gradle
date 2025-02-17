@@ -1,0 +1,100 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+// project information
+group = artifactGroup
+version = "$artifactVersion" + (isSnapshot == "Y" ? '-SNAPSHOT' : '')
+java {
+    sourceCompatibility = '21'
+}
+
+// dependencies settings
+repositories {
+    mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/djordjije11/reeled")
+        credentials {
+            username = System.getProperty('REELED_GH_PACKAGES_USERNAME') ?: System.getenv("REELED_GH_PACKAGES_USERNAME")
+            password = System.getProperty('REELED_GH_PACKAGES_READ_TOKEN') ?: System.getenv("REELED_GH_PACKAGES_READ_TOKEN")
+        }
+    }
+}
+
+dependencies {
+    implementation platform('org.springframework.boot:spring-boot-dependencies:3.4.2')
+    implementation 'org.springframework:spring-core'
+
+    implementation 'io.github.djordjije11.reeled:reeled-codes:1.0.3'
+
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
+}
+
+compileTestJava {
+    options.encoding = "UTF-8"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task incrementToSnapshotVersion {
+    doLast {
+        if (!isSnapshot.equals("Y")) {
+            String newVersion = artifactVersion.substring(0, artifactVersion.lastIndexOf('.') + 1)
+            newVersion = newVersion + (artifactVersion.substring(artifactVersion.lastIndexOf('.') + 1).toInteger() + 1)
+            println "New SNAPSHOT version: " + newVersion
+
+            ant.propertyfile(file: "gradle.properties") {
+                entry(key: "artifactVersion", value: newVersion)
+                entry(key: "isSnapshot", value: "Y")
+            }
+        } else {
+            println "SNAPSHOT version can not be incremented!"
+        }
+    }
+}
+
+jar {
+    archiveBaseName = artifactName
+    manifest {
+        attributes 'Implementation-Title': artifactName,
+                'Implementation-Version': archiveVersion
+    }
+}
+
+test {
+    useJUnitPlatform()
+
+    maxHeapSize = '512M'
+    jvmArgs '-XX:MaxMetaspaceSize=256M'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/djordjije11/reeled")
+            credentials {
+                username = System.getProperty('REELED_GH_PACKAGES_USERNAME') ?: System.getenv("REELED_GH_PACKAGES_USERNAME")
+                password = System.getProperty('REELED_GH_PACKAGES_TOKEN') ?: System.getenv("REELED_GH_PACKAGES_TOKEN")
+            }
+        }
+    }
+}

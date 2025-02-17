@@ -1,0 +1,121 @@
+spring.application.name: author-service
+
+# Deployment stage resources prefix
+reeled.resource.prefix: reeled-default
+
+# Application base settings
+reeled:
+  application:
+    root: ${java.io.tmpdir}
+    work: ${reeled.application.root}/work
+
+# Database settings
+spring.jpa:
+  hibernate.ddl-auto: none
+  open-in-view: false
+  properties.hibernate:
+    jdbc:
+      time_zone: UTC
+      lob.non_contextual_creation: true # https://github.com/spring-projects/spring-boot/issues/12007
+    order_by.default_null_ordering: last
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/author
+    username: author
+    password: author_password
+    hikari:
+      maximum-pool-size: 2
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  lifecycle:
+    timeout-per-shutdown-phase: "10s"
+
+server.shutdown: graceful
+
+spring.liquibase.change-log: classpath:db/changelog/master.xml
+
+spring.data.jpa.repositories.bootstrap-mode: default
+
+# Messaging
+spring.cloud.stream:
+  default:
+    producer:
+      useNativeEncoding: true
+      partition-key-expression: headers['kafka_messageKey'].id
+    consumer.useNativeDecoding: true
+  function.autodetect: false
+  bindings:
+    authorAuthorEventSource-out-0:
+      destination: ${reeled.resource.prefix}-author-event
+  kafka:
+    bindings:
+      authorAuthorEventSource-out-0:
+        producer:
+          sync: true
+    binder:
+      brokers: localhost:9092
+      auto-create-topics: false
+      producer-properties:
+        schema.registry.url: http://localhost:8081
+        key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        key.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+        value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+        retries: 10
+        max.in.flight.requests.per.connection: 1
+      consumer-properties:
+        schema.registry:
+          url: ${spring.cloud.stream.kafka.binder.producer-properties.schema.registry.url}
+          basic.auth.user.info: ${spring.cloud.stream.kafka.binder.producer-properties.schema.registry.basic.auth.user.info}
+        basic.auth.credentials.source: ${spring.cloud.stream.kafka.binder.producer-properties.basic.auth.credentials.source}
+        key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        specific.avro.reader: true
+        auto.offset.reset: latest
+        allow.auto.create.topics: false
+        max.poll.records: 10
+
+# Resilience
+resilience4j:
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 100ms
+    instances:
+      data-access:
+        baseConfig: default
+        retryExceptions:
+          - org.springframework.dao.DataIntegrityViolationException
+          - org.springframework.dao.OptimisticLockingFailureException
+
+# Schedule
+reeled.author.infra.schedule:
+  author-purge.cron: "0 0 1 * * ?"
+
+# Scheduling configuration
+spring.task.scheduling:
+  thread-name-prefix: author-scheduler-
+  pool.size: 3
+  shutdown:
+    await-termination: true
+    await-termination-period: 30s
+
+# API documentation
+springdoc:
+  api-docs.enabled: true
+  paths-to-match: /api/**
+  use-fqn: true
+
+# Error handling
+error.handling:
+  exception-logging: NO_LOGGING
+  full-stacktrace-http-statuses[0]: 5xx
+  http-statuses:
+    java.lang.IllegalArgumentException: BAD_REQUEST
+    com.fasterxml.jackson.databind.JsonMappingException: BAD_REQUEST
+    org.springframework.security.authorization.AuthorizationDeniedException: FORBIDDEN
+    io.github.djordjije11.reeled.commons.exception.NotFoundException: NOT_FOUND
+    io.github.djordjije11.reeled.postmetrics.exception.AuthorAnalyticsEmailRecipientsNotUpdatableException: BAD_REQUEST

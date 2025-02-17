@@ -1,0 +1,15 @@
+rootProject.name = 'reeled-kafka-admin'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/djordjije11/reeled")
+            credentials {
+                username = System.getProperty('REELED_GH_PACKAGES_USERNAME') ?: System.getenv("REELED_GH_PACKAGES_USERNAME")
+                password = System.getProperty('REELED_GH_PACKAGES_TOKEN') ?: System.getenv("REELED_GH_PACKAGES_TOKEN")
+            }
+        }
+    }
+}

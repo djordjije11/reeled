@@ -1,0 +1,16 @@
+{
+  "type": "record",
+  "name": "AuthorDeletedKey",
+  "namespace": "io.github.djordjije11.reeled.author.event",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "valueType",
+      "type": "string",
+      "default": "io.github.djordjije11.reeled.author.event.AuthorDeleted"
+    }
+  ]
+}

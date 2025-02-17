@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "$springBootVersion"
+}
+
+group = artifactGroup
+version = "$artifactVersion" + (isSnapshot == "Y" ? '-SNAPSHOT' : '')
+
+java {
+    sourceCompatibility = '21'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://packages.confluent.io/maven/"
+    }
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/djordjije11/reeled")
+        credentials {
+            username = System.getProperty('REELED_GH_PACKAGES_USERNAME') ?: System.getenv("REELED_GH_PACKAGES_USERNAME")
+            password = System.getProperty('REELED_GH_PACKAGES_READ_TOKEN') ?: System.getenv("REELED_GH_PACKAGES_READ_TOKEN")
+        }
+    }
+}
+
+dependencies {
+    implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2024.0.0')
+
+    // web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:4.5.0'
+
+    // database
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.postgresql:postgresql'
+
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // messaging
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    implementation 'io.github.djordjije11.reeled:reeled-integration-events:1.0.1'
+    implementation('io.confluent:kafka-avro-serializer:7.8.0') {
+        // io.swagger.core.v3:swagger-annotations dependency conflict in org.springdoc:springdoc-openapi-starter-webmvc-api
+        exclude group: "io.swagger.core.v3", module: "swagger-annotations"
+    }
+
+    // resilience
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+
+    // commons
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
+    implementation 'io.github.djordjije11.reeled:reeled-commons:1.0.7'
+    implementation 'io.github.djordjije11.reeled:reeled-codes:1.0.3'
+
+    // scheduling
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:6.0.2'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc:6.0.2'
+
+    // testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+bootJar {
+    archiveClassifier = 'boot'
+    manifest {
+        attributes 'Implementation-Title': artifactName,
+                'Implementation-Version': archiveVersion
+    }
+}
+
+springBoot {
+    buildInfo()
+}
+
+
+test {
+    useJUnitPlatform()
+
+    maxHeapSize = '1024M'
+    jvmArgs '-XX:MaxMetaspaceSize=256M'
+}

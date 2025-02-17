@@ -1,0 +1,42 @@
+{
+  "type": "record",
+  "name": "PostUpserted",
+  "namespace": "io.github.djordjije11.reeled.post.event",
+  "fields": [
+    {
+      "name": "authorId",
+      "type": "long"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "duration",
+      "type": "long"
+    },
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "monetized",
+      "type": "boolean"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "videoUrl",
+      "type": "string"
+    }
+  ]
+}

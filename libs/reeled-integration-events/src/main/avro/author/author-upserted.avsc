@@ -1,0 +1,33 @@
+{
+  "type": "record",
+  "name": "AuthorUpserted",
+  "namespace": "io.github.djordjije11.reeled.author.event",
+  "fields": [
+    {
+      "name": "bio",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "imageUrl",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": "string"
+    }
+  ]
+}

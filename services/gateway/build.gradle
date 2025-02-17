@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "$springBootVersion"
+}
+
+group = artifactGroup
+version = "$artifactVersion" + (isSnapshot == "Y" ? '-SNAPSHOT' : '')
+
+java {
+    sourceCompatibility = '21'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2024.0.0')
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
+    // commons
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.5'
+    implementation 'io.swagger.parser.v3:swagger-parser-v3:2.1.25'
+}
+
+
+bootJar {
+    archiveClassifier = 'boot'
+    manifest {
+        attributes 'Implementation-Title': artifactName,
+                'Implementation-Version': archiveVersion
+    }
+}
+
+springBoot {
+    buildInfo()
+}
+
+
+test {
+    useJUnitPlatform()
+
+    maxHeapSize = '1024M'
+    jvmArgs '-XX:MaxMetaspaceSize=256M'
+}

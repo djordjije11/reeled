@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "AuthorDeleted",
+  "namespace": "io.github.djordjije11.reeled.author.event",
+  "fields": [
+    {
+      "name": "deletedDate",
+      "type": "long"
+    },
+    {
+      "name": "id",
+      "type": "long"
+    }
+  ]
+}

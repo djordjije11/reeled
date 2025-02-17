@@ -1,0 +1,31 @@
+package io.github.djordjije11.reeled.postmetrics.domain;
+
+import io.github.djordjije11.reeled.codes.AuthorCodes.AuthorType;
+import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
+import io.github.djordjije11.reeled.commons.converter.BaseEnumToStringConverter;
+import jakarta.persistence.Converter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+/**
+ * @author Djordjije Radovic
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+class PostMetricsCodesAttributeConverters {
+
+    @Converter(autoApply = true)
+    static class AuthorTypeConverter extends BaseEnumToStringConverter<AuthorType> {
+
+        AuthorTypeConverter() {
+            super(AuthorType.class);
+        }
+    }
+
+    @Converter(autoApply = true)
+    static class PostCategoryConverter extends BaseEnumToStringConverter<PostCategory> {
+
+        PostCategoryConverter() {
+            super(PostCategory.class);
+        }
+    }
+}

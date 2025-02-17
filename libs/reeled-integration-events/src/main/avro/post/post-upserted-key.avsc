@@ -1,0 +1,16 @@
+{
+  "type": "record",
+  "name": "PostUpsertedKey",
+  "namespace": "io.github.djordjije11.reeled.post.event",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "valueType",
+      "type": "string",
+      "default": "io.github.djordjije11.reeled.post.event.PostUpserted"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="1.25.1.0" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="pm_post">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_pm_post"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duration" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_monetized" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="video_url" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_deleted" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.25.1.1" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="pm_post_daily_performance">
+            <column name="id" type="BIGINT" autoIncrement="true" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_pm_post_daily_performance"/>
+            </column>
+            <column name="post_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="search_appearances" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="views" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="uq_pm_post_daily_performance_post_id_date" tableName="pm_post_daily_performance" columnNames="post_id, date"/>
+    </changeSet>
+
+    <changeSet id="1.25.1.2" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="pm_post_daily_performance_aggregation">
+            <column name="id" type="BIGINT" autoIncrement="true" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_pm_post_daily_performance_aggregation"/>
+            </column>
+            <column name="post_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="BIGINT"/>
+            <column name="category" type="VARCHAR(32)"/>
+            <column name="duration" type="BIGINT"/>
+            <column name="is_monetized" type="BOOLEAN"/>
+            <column name="search_appearances" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="views" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="uq_pm_post_daily_performance_aggregation_post_id_date" tableName="pm_post_daily_performance_aggregation"
+                             columnNames="post_id, date"/>
+    </changeSet>
+
+    <changeSet id="1.25.1.3" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="pm_author">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_pm_author"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="analytics_email_recipients" type="JSONB" defaultValue="[]">
+                <constraints nullable="false"/>
+            </column>
+            <column name="analytics_monthly_report_last_processed_period" type="DATE"/>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
