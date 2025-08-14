@@ -2,6 +2,7 @@ spring.application.name: legacy-connector-service
 
 # Deployment stage resources prefix
 reeled.resource.prefix: reeled-default
+reeled-legacy.resource.prefix: reeled_legacy_default
 
 # Application base settings
 reeled:
@@ -39,6 +40,10 @@ spring.liquibase.change-log: classpath:db/changelog/master.xml
 spring.data.jpa.repositories.bootstrap-mode: default
 
 # Messaging
+reeled.cloud.stream.legacy-connector-event-handler.enabled: true
+
+spring.cloud.function.definition: "legacyConnectorPostEventHandler;legacyConnectorLegacyPostEventHandler"
+
 spring.cloud.stream:
   default:
     producer:
@@ -46,12 +51,38 @@ spring.cloud.stream:
       partition-key-expression: headers['kafka_messageKey'].id
     consumer.useNativeDecoding: true
   function.autodetect: false
+  bindings:
+    legacyConnectorPostEventHandler-in-0:
+      destination: ${reeled.resource.prefix}-post-event
+      group: ${reeled.resource.prefix}-legacy-connector
+      binder: kafka-reeled
+    legacyConnectorLegacyPostEventHandler-in-0:
+      destination: ${reeled-legacy.resource.prefix}.public.post
+      group: ${reeled-legacy.resource.prefix}-legacy-connector
+      binder: kafka-reeled-legacy
+  binders:
+    kafka-reeled:
+      type: kafka
+      environment:
+        spring.cloud.stream.kafka.binder:
+          brokers: localhost:9092
+          producer-properties:
+            schema.registry.url: http://localhost:8081
+          consumer-properties:
+            schema.registry.url: ${spring.cloud.stream.binders.kafka-reeled.environment.spring.cloud.stream.kafka.binder.producer-properties.schema.registry.url}
+    kafka-reeled-legacy:
+      type: kafka
+      environment:
+        spring.cloud.stream.kafka.binder:
+          brokers: localhost:9093
+          producer-properties:
+            schema.registry.url: http://localhost:8082
+          consumer-properties:
+            schema.registry.url: ${spring.cloud.stream.binders.kafka-reeled-legacy.environment.spring.cloud.stream.kafka.binder.producer-properties.schema.registry.url}
   kafka:
     binder:
-      brokers: localhost:9092
       auto-create-topics: false
       producer-properties:
-        schema.registry.url: http://localhost:8081
         key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
         value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
         key.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
@@ -60,7 +91,6 @@ spring.cloud.stream:
         max.in.flight.requests.per.connection: 1
       consumer-properties:
         schema.registry:
-          url: ${spring.cloud.stream.kafka.binder.producer-properties.schema.registry.url}
           basic.auth.user.info: ${spring.cloud.stream.kafka.binder.producer-properties.schema.registry.basic.auth.user.info}
         basic.auth.credentials.source: ${spring.cloud.stream.kafka.binder.producer-properties.basic.auth.credentials.source}
         key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer

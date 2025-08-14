@@ -1,13 +1,10 @@
-package io.github.djordjije11.reeled;
+package io.github.djordjije11.reeledlegacy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * @author Djordjije Radovic
- */
 @SpringBootTest
-class AuthorServiceApplicationTest {
+class ReeledLegacyApplicationTest {
 
     @Test
     void contextLoads() {

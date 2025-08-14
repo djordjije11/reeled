@@ -1,0 +1,67 @@
+spring.application.name: reeled-legacy
+
+# Deployment stage resources prefix
+reeled.resource.prefix: reeled-legacy-default
+
+# Application base settings
+reeled:
+  application:
+    root: ${java.io.tmpdir}
+    work: ${reeled.application.root}/work
+
+# Database settings
+spring.jpa:
+  hibernate.ddl-auto: none
+  open-in-view: false
+  properties.hibernate:
+    jdbc:
+      time_zone: UTC
+      lob.non_contextual_creation: true # https://github.com/spring-projects/spring-boot/issues/12007
+    order_by.default_null_ordering: last
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/reeled_legacy
+    username: reeled_legacy
+    password: reeled_legacy_password
+    hikari:
+      maximum-pool-size: 2
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  lifecycle:
+    timeout-per-shutdown-phase: "10s"
+
+server.shutdown: graceful
+
+spring.liquibase.change-log: classpath:db/changelog/master.xml
+
+spring.data.jpa.repositories.bootstrap-mode: default
+
+# Schedule
+reeledlegacy.post.infra.schedule:
+  post-purge.cron: "0 0 1 * * ?"
+
+# Scheduling configuration
+spring.task.scheduling:
+  thread-name-prefix: reeled-legacy-scheduler-
+  pool.size: 3
+  shutdown:
+    await-termination: true
+    await-termination-period: 30s
+
+# API documentation
+springdoc:
+  api-docs.enabled: true
+  paths-to-match: /api/**
+  use-fqn: true
+
+# Error handling
+error.handling:
+  exception-logging: NO_LOGGING
+  full-stacktrace-http-statuses[0]: 5xx
+  http-statuses:
+    java.lang.IllegalArgumentException: BAD_REQUEST
+    com.fasterxml.jackson.databind.JsonMappingException: BAD_REQUEST
+    org.springframework.security.authorization.AuthorizationDeniedException: FORBIDDEN
+    io.github.djordjije11.reeledlegacy.commons.exception.NotFoundException: NOT_FOUND

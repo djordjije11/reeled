@@ -1,0 +1,96 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="1.24.1.0" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="shedlock">
+            <column name="name" type="VARCHAR(64)">
+                <constraints primaryKey="true" primaryKeyName="pk_shedlock"/>
+            </column>
+            <column name="lock_until" type="TIMESTAMP(3)"/>
+            <column name="locked_at" type="TIMESTAMP(3)"/>
+            <column name="locked_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.24.1.1" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="post_category">
+            <column name="id" type="BIGSERIAL" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_post_category"/>
+            </column>
+            <column name="name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.24.1.2" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="author_type">
+            <column name="id" type="BIGSERIAL" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_author_type"/>
+            </column>
+            <column name="name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.24.1.3" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="author">
+            <column name="id" type="BIGINT" autoIncrement="true" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_author"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_author_author_type" references="author_type(id)"/>
+            </column>
+            <column name="bio" type="TEXT"/>
+            <column name="image_url" type="VARCHAR(128)"/>
+            <column name="is_deleted" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.24.1.4" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="post">
+            <column name="id" type="BIGINT" autoIncrement="true" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_post"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_post_author" references="author(id)"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_post_post_category" references="post_category(id)"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="duration" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_monetized" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="video_url" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_deleted" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

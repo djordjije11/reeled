@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "PostDeleted",
+  "namespace": "io.github.djordjije11.reeled.post.event",
+  "fields": [
+    {
+      "name": "deletedDate",
+      "type": "long"
+    },
+    {
+      "name": "id",
+      "type": "long"
+    }
+  ]
+}

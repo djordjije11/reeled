@@ -8,14 +8,13 @@ if [ -z "$REELED_GH_PACKAGES_READ_TOKEN" ]; then
     exit 1
 fi
 
-scripts/wait-for-services.sh localhost:8081 localhost:8082 localhost:8083
+scripts/wait-for-services.sh localhost:8081 localhost:8083
 
-# Create Kafka topics
+# Create Kafka Debezium topics
 curl -L https://maven.pkg.github.com/djordjije11/reeled/io.github.djordjije11.reeled.reeled-kafka-admin/1.0.0/reeled-kafka-admin-1.0.0.jar \
  -H "Authorization: Bearer $REELED_GH_PACKAGES_READ_TOKEN" \
  -o reeled-kafka-admin.jar
-java -jar reeled-kafka-admin.jar localhost:9092 reeled-default-post-event reeled-default-author-event
-java -jar reeled-kafka-admin.jar localhost:9093 reeled_legacy_default.public.post \
+java -jar reeled-kafka-admin.jar localhost:9092 reeled_legacy_default.public.post \
   reeled_legacy_default.public.author \
   reeled_legacy_default.public.post_category \
   reeled_legacy_default.public.author_type
@@ -27,7 +26,7 @@ curl -i -X POST -H "Accept: application/json" -H "Content-Type: application/json
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "plugin.name": "pgoutput",
-    "database.hostname": "reeled-legacy-db",
+    "database.hostname": "db",
     "database.port": "5432",
     "database.dbname": "reeled_legacy",
     "database.user": "reeled_legacy",
