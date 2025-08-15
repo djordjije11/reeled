@@ -14,14 +14,15 @@ scripts/wait-for-services.sh localhost:8081 localhost:8083
 curl -L https://maven.pkg.github.com/djordjije11/reeled/io.github.djordjije11.reeled.reeled-kafka-admin/1.0.0/reeled-kafka-admin-1.0.0.jar \
  -H "Authorization: Bearer $REELED_GH_PACKAGES_READ_TOKEN" \
  -o reeled-kafka-admin.jar
-java -jar reeled-kafka-admin.jar localhost:9092 reeled_legacy_default.public.post \
-  reeled_legacy_default.public.author \
-  reeled_legacy_default.public.post_category \
-  reeled_legacy_default.public.author_type
+java -jar reeled-kafka-admin.jar localhost:9092 reeledlegacy-default.public.post \
+  reeledlegacy-default.public.author \
+  reeledlegacy-default.public.post_category \
+  reeledlegacy-default.public.author_type
 rm -rf reeled-kafka-admin.jar
 
 # Setup Debezium Postgres connector
-curl -i -X POST -H "Accept: application/json" -H "Content-Type: application/json" localhost:8083/connectors/ --data '{
+curl -i -X POST -H "Accept: application/json" -H "Content-Type: application/json" localhost:8083/connectors/ --data @- <<'EOF'
+{
   "name": "reeled-debezium-postgres-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
@@ -31,7 +32,18 @@ curl -i -X POST -H "Accept: application/json" -H "Content-Type: application/json
     "database.dbname": "reeled_legacy",
     "database.user": "reeled_legacy",
     "database.password": "reeled_legacy_password",
-    "database.server.name": "reeled_legacy_default",
-    "table.include.list": "public.post,public.author,public.post_category,public.author_type"
+    "database.server.name": "reeledlegacy",
+    "table.include.list": "public.post,public.author,public.post_category,public.author_type",
+    "transforms": "RenameNamespace",
+    "transforms.RenameNamespace.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.RenameNamespace.regex": "reeledlegacy\\.public\\.(.*)",
+    "transforms.RenameNamespace.replacement": "reeledlegacy-default.public.$1",
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.key.subject.name.strategy": "io.confluent.kafka.serializers.subject.TopicRecordNameStrategy",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.value.subject.name.strategy": "io.confluent.kafka.serializers.subject.TopicRecordNameStrategy"
   }
-}'
+}
+EOF

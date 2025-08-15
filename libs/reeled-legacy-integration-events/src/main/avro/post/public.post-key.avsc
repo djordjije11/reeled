@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "Key",
+  "namespace": "reeledlegacy.public.post",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    }
+  ],
+  "connect.name": "reeledlegacy.public.post.Key"
+}

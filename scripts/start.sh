@@ -6,4 +6,5 @@ cd ..
 scripts/build-services.sh
 scripts/start-all-services.sh
 
+printf "\n"
 echo "All Reeled services started successfully!"

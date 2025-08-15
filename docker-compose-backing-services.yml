@@ -134,7 +134,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8082
 
   debezium:
-    image: debezium/connect:1.4
+    image: debezium/connect:1.8
     environment:
       BOOTSTRAP_SERVERS: 'legacy-broker:29093'
       GROUP_ID: 1
