@@ -19,10 +19,12 @@ public class LegacyConnectorLegacyEventHandler {
     public void handleLegacyPostEvent(Object event, MessageHeaders headers) {
         logger.info("Handling legacy connector legacy post event (event: {}, headers: {})", event, headers);
 
-        if (event instanceof reeledlegacy.public$.post.Envelope postEnvelope) {
-            logger.info("Received legacy post event: {}", postEnvelope.getAfter());
-        } else {
-            logger.error("Not expected legacy post event type: {}", event.getClass().getName());
-        }
+        // Call corresponding service to persist changes to the new platform
+
+//        if (event instanceof reeledlegacy.public$.post.Envelope postEnvelope) {
+//            logger.info("Received legacy post event: {}", postEnvelope.getAfter());
+//        } else {
+//            logger.error("Not expected legacy post event type: {}", event.getClass().getName());
+//        }
     }
 }

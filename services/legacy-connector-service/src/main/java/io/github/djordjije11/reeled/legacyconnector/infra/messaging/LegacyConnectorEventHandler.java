@@ -17,5 +17,7 @@ public class LegacyConnectorEventHandler {
 
     public void handlePostEvent(Object event, MessageHeaders headers) {
         logger.info("Handling legacy connector post event (event: {}, headers: {})", event, headers);
+
+        // Persist changes to the legacy database
     }
 }

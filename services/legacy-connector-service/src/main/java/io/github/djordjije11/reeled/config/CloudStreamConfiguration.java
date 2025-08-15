@@ -2,8 +2,6 @@ package io.github.djordjije11.reeled.config;
 
 import io.github.djordjije11.reeled.legacyconnector.infra.messaging.LegacyConnectorEventHandler;
 import io.github.djordjije11.reeled.legacyconnector.infra.messaging.LegacyConnectorLegacyEventHandler;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +15,6 @@ import java.util.function.BiConsumer;
  */
 @Configuration
 class CloudStreamConfiguration {
-
-    // TODO: Check if there's more elegant solution for this
-    @Bean
-    public MeterRegistry meterRegistry() {
-        return new SimpleMeterRegistry();
-    }
 
     @RequiredArgsConstructor
     @Configuration
