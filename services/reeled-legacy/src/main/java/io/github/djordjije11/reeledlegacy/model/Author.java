@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.ZonedDateTime;
@@ -23,10 +24,11 @@ import java.util.Set;
 /**
  * @author Djordjije Radovic
  */
+@Setter
 @Getter
 @ToString
 @EqualsAndHashCode(of = "id", callSuper = false)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
 @Table(name = "author")
 public class Author {
