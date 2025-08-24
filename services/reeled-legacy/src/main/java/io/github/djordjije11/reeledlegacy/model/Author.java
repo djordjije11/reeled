@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeledlegacy.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.ZonedDateTime;
 import java.util.Set;
 
 /**
@@ -49,11 +47,6 @@ public class Author {
     private String bio;
 
     private String imageUrl;
-
-    @Column(name = "is_deleted")
-    private boolean deleted;
-
-    private ZonedDateTime deletedDate;
 
     @Version
     private Long version;

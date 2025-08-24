@@ -119,3 +119,9 @@ error.handling:
     org.springframework.security.authorization.AuthorizationDeniedException: FORBIDDEN
     io.github.djordjije11.reeled.commons.exception.NotFoundException: NOT_FOUND
     io.github.djordjije11.reeled.postmetrics.exception.AuthorAnalyticsEmailRecipientsNotUpdatableException: BAD_REQUEST
+
+# Integration with services
+reeled.integration:
+  external:
+    legacy:
+      rest.endpoint: http://reeled-legacy/api

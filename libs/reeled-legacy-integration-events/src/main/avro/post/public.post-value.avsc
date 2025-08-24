@@ -47,21 +47,6 @@
               "type": "string"
             },
             {
-              "name": "is_deleted",
-              "type": "boolean"
-            },
-            {
-              "name": "deleted_date",
-              "type": [
-                "null",
-                {
-                  "type": "long",
-                  "connect.version": 1,
-                  "connect.name": "io.debezium.time.MicroTimestamp"
-                }
-              ]
-            },
-            {
               "name": "version",
               "type": "long"
             }

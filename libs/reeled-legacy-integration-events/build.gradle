@@ -102,9 +102,6 @@ schemaRegistry {
             // author schemas
             [subject: 'public.author-reeledlegacy.public.author.Key', schema: 'src/main/avro/author/public.author-key.avsc', dependencies: []],
             [subject: 'public.author-reeledlegacy.public.author.Envelope', schema: 'src/main/avro/author/public.author-value.avsc', dependencies: []],
-            // author_type schemas
-            [subject: 'public.author_type-reeledlegacy.public.author_type.Key', schema: 'src/main/avro/author_type/public.author_type-key.avsc', dependencies: []],
-            [subject: 'public.author_type-reeledlegacy.public.author_type.Envelope', schema: 'src/main/avro/author_type/public.author_type-value.avsc', dependencies: []],
             // post schemas
             [subject: 'public.post-reeledlegacy.public.post.Key', schema: 'src/main/avro/post/public.post-key.avsc', dependencies: []],
             [subject: 'public.post-reeledlegacy.public.post.Envelope', schema: 'src/main/avro/post/public.post-value.avsc', dependencies: []],

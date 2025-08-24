@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
 
 /**
  * @author Djordjije Radovic
@@ -52,11 +51,6 @@ public class Post {
     private String title;
 
     private String videoUrl;
-
-    @Column(name = "is_deleted")
-    private boolean deleted;
-
-    private ZonedDateTime deletedDate;
 
     @Version
     private Long version;

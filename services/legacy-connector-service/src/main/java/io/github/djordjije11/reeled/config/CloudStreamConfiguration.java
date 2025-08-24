@@ -22,13 +22,13 @@ class CloudStreamConfiguration {
     static class PostMetricsEventHandlerConfiguration {
 
         @Bean
-        BiConsumer<Object, MessageHeaders> legacyConnectorPostEventHandler(LegacyConnectorEventHandler legacyConnectorEventHandler) {
-            return legacyConnectorEventHandler::handlePostEvent;
+        BiConsumer<Object, MessageHeaders> legacyConnectorAuthorEventHandler(LegacyConnectorEventHandler legacyConnectorEventHandler) {
+            return legacyConnectorEventHandler::handleAuthorEvent;
         }
 
         @Bean
-        BiConsumer<Object, MessageHeaders> legacyConnectorLegacyPostEventHandler(LegacyConnectorLegacyEventHandler legacyConnectorLegacyEventHandler) {
-            return legacyConnectorLegacyEventHandler::handleLegacyPostEvent;
+        BiConsumer<Object, MessageHeaders> legacyConnectorLegacyAuthorEventHandler(LegacyConnectorLegacyEventHandler legacyConnectorLegacyEventHandler) {
+            return legacyConnectorLegacyEventHandler::handleLegacyAuthorEvent;
         }
     }
 }

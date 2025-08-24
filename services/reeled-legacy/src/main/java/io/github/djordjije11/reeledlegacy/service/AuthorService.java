@@ -4,40 +4,24 @@ import io.github.djordjije11.reeledlegacy.model.Author;
 import io.github.djordjije11.reeledlegacy.model.AuthorType;
 import io.github.djordjije11.reeledlegacy.repository.AuthorRepository;
 import io.github.djordjije11.reeledlegacy.repository.AuthorTypeRepository;
-import jakarta.validation.ClockProvider;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.time.Clock;
-import java.time.Period;
-import java.time.ZonedDateTime;
-import java.util.List;
-
 /**
  * @author Djordjije Radovic
  */
+@RequiredArgsConstructor
 @Service
 public class AuthorService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthorService.class);
 
-    private static final Period RETENTION_PERIOD = Period.ofDays(3);
-
-    private static final int FETCH_SIZE = 5000;
-
     private final AuthorRepository authorRepository;
 
     private final AuthorTypeRepository authorTypeRepository;
-
-    private final Clock clock;
-
-    public AuthorService(AuthorRepository authorRepository, AuthorTypeRepository authorTypeRepository, ClockProvider clockProvider) {
-        this.authorRepository = authorRepository;
-        this.authorTypeRepository = authorTypeRepository;
-        this.clock = clockProvider.getClock();
-    }
 
     public Long create(String name, Long typeId, String bio, String imageUrl) {
         Assert.hasText(name, "name must not be empty");
@@ -83,39 +67,13 @@ public class AuthorService {
         logger.info("Deleting an author (id: {})...", id);
 
         final Author author = getAuthor(id);
-        author.setDeleted(true);
-        author.setDeletedDate(ZonedDateTime.now(clock));
 
-        authorRepository.save(author);
+        authorRepository.delete(author);
 
         logger.info("Author successfully deleted (id: {})", id);
     }
 
-    public void purge() {
-        logger.info("Purging authors...");
-
-        final ZonedDateTime purgeAgeThreshold = ZonedDateTime.now(clock).minus(RETENTION_PERIOD);
-
-        List<Long> ids;
-        do {
-            ids = authorRepository.findAllIdsEligibleForPurge(purgeAgeThreshold, FETCH_SIZE);
-            ids.forEach(this::purge);
-        } while (ids.size() == FETCH_SIZE);
-
-        logger.info("Authors successfully purged");
-    }
-
-    private void purge(Long id) {
-        logger.info("Purging an author (id: {})...", id);
-
-        final Author author = authorRepository.findById(id).orElseThrow(() -> new RuntimeException("Author does not exist (id: %d)".formatted(id)));
-
-        authorRepository.delete(author);
-
-        logger.info("Author successfully purged (id: {})", id);
-    }
-
     private Author getAuthor(Long id) {
-        return authorRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RuntimeException("Author does not exist (id: %d)".formatted(id)));
+        return authorRepository.findById(id).orElseThrow(() -> new RuntimeException("Author does not exist (id: %d)".formatted(id)));
     }
 }

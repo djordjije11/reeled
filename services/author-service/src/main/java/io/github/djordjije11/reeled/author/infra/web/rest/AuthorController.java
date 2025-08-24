@@ -39,7 +39,11 @@ public class AuthorController {
     @Operation(description = "Creates an author")
     @ApiResponse(responseCode = "201", description = "Author created")
     public ResponseEntity<Void> create(@RequestBody @Valid AuthorCreateDto authorCreateDto) {
-        final Long authorId = authorService.create(authorCreateDto.name(), authorCreateDto.type(), authorCreateDto.bio(), authorCreateDto.imageUrl());
+        final Long authorId = authorService.create(authorCreateDto.id(),
+                authorCreateDto.name(),
+                authorCreateDto.type(),
+                authorCreateDto.bio(),
+                authorCreateDto.imageUrl());
         return ResponseEntity.created(URI.create("/" + authorId.toString())).build();
     }
 

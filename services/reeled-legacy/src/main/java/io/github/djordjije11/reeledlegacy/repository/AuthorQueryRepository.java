@@ -15,6 +15,6 @@ public interface AuthorQueryRepository extends Repository<Author, Long> {
     @Query("""
             SELECT new io.github.djordjije11.reeledlegacy.model.AuthorProjection(name, type.name, bio, imageUrl)
             FROM Author
-            WHERE id = :id AND deleted = FALSE""")
-    Optional<AuthorProjection> findByIdAndDeletedIsFalse(Long id);
+            WHERE id = :id""")
+    Optional<AuthorProjection> findById(Long id);
 }

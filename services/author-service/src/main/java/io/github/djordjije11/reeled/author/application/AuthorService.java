@@ -61,10 +61,10 @@ public class AuthorService {
     }
 
     @Retry(name = DATA_ACCESS_RETRY_NAME)
-    public Long create(String name, AuthorType type, String bio, String imageUrl) {
+    public Long create(Long id, String name, AuthorType type, String bio, String imageUrl) {
         logger.info("Creating an author (name: {})...", name);
 
-        final Author author = authorFactory.create(name, type, bio, imageUrl);
+        final Author author = authorFactory.create(id, name, type, bio, imageUrl);
 
         authorRepository.save(author);
 

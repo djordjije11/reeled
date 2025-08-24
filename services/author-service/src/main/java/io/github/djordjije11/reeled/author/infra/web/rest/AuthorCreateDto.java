@@ -7,6 +7,6 @@ import jakarta.validation.constraints.NotNull;
 /**
  * @author Djordjije Radovic
  */
-public record AuthorCreateDto(@NotBlank String name, @NotNull AuthorType type, String bio, String imageUrl) {
+public record AuthorCreateDto(Long id, @NotBlank String name, @NotNull AuthorType type, String bio, String imageUrl) {
 
 }

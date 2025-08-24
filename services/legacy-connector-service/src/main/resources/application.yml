@@ -42,7 +42,8 @@ spring.data.jpa.repositories.bootstrap-mode: default
 # Messaging
 reeled.cloud.stream.legacy-connector-event-handler.enabled: true
 
-spring.cloud.function.definition: "legacyConnectorPostEventHandler;legacyConnectorLegacyPostEventHandler"
+spring.cloud.function.definition: "legacyConnectorAuthorEventHandler;\
+  legacyConnectorLegacyAuthorEventHandler;"
 
 spring.cloud.stream:
   default:
@@ -52,12 +53,12 @@ spring.cloud.stream:
     consumer.useNativeDecoding: true
   function.autodetect: false
   bindings:
-    legacyConnectorPostEventHandler-in-0:
-      destination: ${reeled.resource.prefix}-post-event
+    legacyConnectorAuthorEventHandler-in-0:
+      destination: ${reeled.resource.prefix}-author-event
       group: ${reeled.resource.prefix}-legacy-connector
       binder: kafka-reeled
-    legacyConnectorLegacyPostEventHandler-in-0:
-      destination: ${reeled-legacy.resource.prefix}.public.post
+    legacyConnectorLegacyAuthorEventHandler-in-0:
+      destination: ${reeled-legacy.resource.prefix}.public.author
       group: ${reeled-legacy.resource.prefix}-legacy-connector
       binder: kafka-reeled-legacy
   binders:
@@ -140,3 +141,13 @@ error.handling:
     com.fasterxml.jackson.databind.JsonMappingException: BAD_REQUEST
     org.springframework.security.authorization.AuthorizationDeniedException: FORBIDDEN
     io.github.djordjije11.reeled.commons.exception.NotFoundException: NOT_FOUND
+
+# Integration with services
+reeled.integration:
+  internal.service:
+    author:
+      rest.endpoint: http://author-service:8080/api
+
+logging:
+  level:
+    io.github.djordjije11.reeled: DEBUG

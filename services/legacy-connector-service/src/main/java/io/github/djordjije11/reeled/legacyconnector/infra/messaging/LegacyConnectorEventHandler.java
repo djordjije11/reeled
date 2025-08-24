@@ -15,9 +15,6 @@ public class LegacyConnectorEventHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(LegacyConnectorEventHandler.class);
 
-    public void handlePostEvent(Object event, MessageHeaders headers) {
-        logger.info("Handling legacy connector post event (event: {}, headers: {})", event, headers);
-
-        // Persist changes to the legacy database
+    public void handleAuthorEvent(Object event, MessageHeaders headers) {
     }
 }
