@@ -74,7 +74,7 @@ public class Author extends AbstractAggregateRoot<Author> {
             throw new ReeledDomainException("Author is not legacy and cannot be updated from legacy (id: %d)".formatted(id));
         }
 
-        if (this.name.equals(name) && Objects.equals(this.bio, bio) && Objects.equals(this.imageUrl, imageUrl)) {
+        if (this.name.equals(name) && Objects.equals(this.bio, bio) && Objects.equals(this.imageUrl, imageUrl) && this.legacy == legacy) {
             return;
         }
 
