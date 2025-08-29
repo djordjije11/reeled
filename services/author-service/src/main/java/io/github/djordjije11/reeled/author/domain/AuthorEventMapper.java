@@ -19,6 +19,7 @@ final class AuthorEventMapper {
                 .setBio(author.getBio())
                 .setId(author.getId())
                 .setImageUrl(author.getImageUrl())
+                .setLegacy(author.isLegacy())
                 .setName(author.getName())
                 .setType(mapToBaseEnumValue(author.getType()))
                 .build();

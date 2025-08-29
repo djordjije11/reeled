@@ -56,7 +56,7 @@ public class AuthorController {
     @ApiResponse(responseCode = "204", description = "Author updated")
     public ResponseEntity<Void> update(@PathVariable Long authorId,
                                        @RequestBody @Valid AuthorUpdateDto authorUpdateDto,
-                                       @RequestHeader(name = "Reeled-Legacy-Import", required = false) boolean legacy) {
+                                       @RequestHeader(name = "X-Reeled-Legacy-Import", required = false) boolean legacy) {
         authorService.update(authorId, authorUpdateDto.name(), authorUpdateDto.bio(), authorUpdateDto.imageUrl(), legacy);
         return ResponseEntity.noContent().build();
     }
@@ -64,8 +64,8 @@ public class AuthorController {
     @DeleteMapping("/authors/{authorId}")
     @Operation(description = "Deletes an author")
     @ApiResponse(responseCode = "204", description = "Author deleted")
-    public ResponseEntity<Void> delete(@PathVariable Long authorId) {
-        authorService.delete(authorId);
+    public ResponseEntity<Void> delete(@PathVariable Long authorId, @RequestHeader(name = "X-Reeled-Legacy-Import", required = false) boolean legacy) {
+        authorService.delete(authorId, legacy);
         return ResponseEntity.noContent().build();
     }
 

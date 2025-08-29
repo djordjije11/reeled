@@ -1,10 +1,13 @@
 package io.github.djordjije11.reeled.legacyconnector.domain;
 
-import io.github.djordjije11.reeled.codes.AuthorCodes.AuthorType;
 import io.github.djordjije11.reeled.codes.AuthorCodesLegacyLookupMappings;
-import io.github.djordjije11.reeled.integration.external.legacy.rest.AuthorCreateDto;
-import io.github.djordjije11.reeled.integration.external.legacy.rest.AuthorUpdateDto;
+import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyAuthorCreateDto;
+import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyAuthorUpdateDto;
 import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyClient;
+import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorCreateDto;
+import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorServiceClient;
+import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorUpdateDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -15,8 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.util.Assert;
-
-import java.util.Objects;
 
 /**
  * @author Djordjije Radovic
@@ -32,39 +33,96 @@ public class AuthorLegacyAuthorSyncEntry {
     @Id
     private Long id;
 
-    private String name;
+    private AuthorData authorData;
 
-    private AuthorType type;
+    private LegacyAuthorData legacyAuthorData;
 
-    private String bio;
-
-    private String imageUrl;
+    @Column(name = "is_legacy")
+    private boolean legacy;
 
     @Version
     private Long version;
 
-    public AuthorLegacyAuthorSyncEntry(String name, AuthorType type, String bio, String imageUrl, LegacyClient legacyClient) {
-        Assert.hasText(name, "name must be provided");
-        Assert.notNull(type, "type must not be null");
+    public AuthorLegacyAuthorSyncEntry(AuthorData authorData, LegacyClient legacyClient) {
+        Assert.notNull(authorData, "authorData must not be null");
+        Assert.notNull(legacyClient, "legacyClient must not be null");
 
-        this.id = legacyClient.createAuthor(new AuthorCreateDto(name, AuthorCodesLegacyLookupMappings.AUTHOR_TYPE_AUTHOR_TYPE_ID_MAP.get(type), bio, imageUrl));
-        this.name = name;
-        this.type = type;
-        this.bio = bio;
-        this.imageUrl = imageUrl;
+        this.id = legacyClient.createAuthor(new LegacyAuthorCreateDto(authorData.getName(),
+                AuthorCodesLegacyLookupMappings.AUTHOR_TYPE_AUTHOR_TYPE_ID_MAP.get(authorData.getType()),
+                authorData.getBio(),
+                authorData.getImageUrl()));
+        this.authorData = authorData;
+        this.legacy = false;
     }
 
-    public void update(String name, String bio, String imageUrl, LegacyClient legacyClient) {
-        Assert.hasText(name, "name must be provided");
+    public AuthorLegacyAuthorSyncEntry(Long id, LegacyAuthorData legacyAuthorData, AuthorServiceClient authorServiceClient) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(legacyAuthorData, "legacyAuthorData must not be null");
+        Assert.notNull(authorServiceClient, "authorServiceClient must not be null");
 
-        if (this.name.equals(name) && Objects.equals(this.bio, bio) && Objects.equals(this.imageUrl, imageUrl)) {
+        authorServiceClient.create(id,
+                new AuthorCreateDto(legacyAuthorData.getName(),
+                        AuthorCodesLegacyLookupMappings.AUTHOR_TYPE_ID_AUTHOR_TYPE_MAP.get(legacyAuthorData.getTypeId()),
+                        legacyAuthorData.getBio(),
+                        legacyAuthorData.getImageUrl()));
+
+        this.id = id;
+        this.legacyAuthorData = legacyAuthorData;
+        this.legacy = true;
+    }
+
+    public void sync(AuthorData authorData, boolean legacy, LegacyClient legacyClient) {
+        Assert.notNull(authorData, "authorData must not be null");
+        Assert.notNull(legacyClient, "legacyClient must not be null");
+
+        if (legacy) {
             return;
         }
 
-        legacyClient.updateAuthor(id, new AuthorUpdateDto(name, bio, imageUrl));
+        if (authorData.equals(this.authorData) && this.legacy == legacy) {
+            return;
+        }
 
-        this.name = name;
-        this.bio = bio;
-        this.imageUrl = imageUrl;
+        legacyClient.updateAuthor(id, new LegacyAuthorUpdateDto(authorData.getName(), authorData.getBio(), authorData.getImageUrl()));
+
+        this.authorData = authorData;
+        this.legacy = legacy;
+    }
+
+    public void sync(LegacyAuthorData legacyAuthorData, AuthorServiceClient authorServiceClient) {
+        Assert.notNull(legacyAuthorData, "legacyAuthorData must not be null");
+        Assert.notNull(authorServiceClient, "authorServiceClient must not be null");
+
+        if (!legacy) {
+            return;
+        }
+
+        if (legacyAuthorData.equals(this.legacyAuthorData)) {
+            return;
+        }
+
+        authorServiceClient.update(id, new AuthorUpdateDto(legacyAuthorData.getName(), legacyAuthorData.getBio(), legacyAuthorData.getImageUrl()));
+
+        this.legacyAuthorData = legacyAuthorData;
+    }
+
+    public void syncDelete(AuthorServiceClient authorServiceClient) {
+        Assert.notNull(authorServiceClient, "authorServiceClient must not be null");
+
+        if (!legacy) {
+            return;
+        }
+
+        authorServiceClient.delete(id);
+    }
+
+    public void syncDelete(LegacyClient legacyClient) {
+        Assert.notNull(legacyClient, "legacyClient must not be null");
+
+        if (legacy) {
+            return;
+        }
+
+        legacyClient.deleteAuthor(id);
     }
 }

@@ -22,6 +22,10 @@
       ]
     },
     {
+      "name": "legacy",
+      "type": "boolean"
+    },
+    {
       "name": "name",
       "type": "string"
     },

@@ -1,6 +1,7 @@
 package io.github.djordjije11.reeled.legacyconnector.infra.messaging;
 
-import io.github.djordjije11.reeled.legacyconnector.application.LegacyAuthorAuthorSyncEntryService;
+import io.github.djordjije11.reeled.legacyconnector.application.AuthorLegacyAuthorSyncEntryService;
+import io.github.djordjije11.reeled.legacyconnector.domain.LegacyAuthorData;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class LegacyConnectorLegacyEventHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(LegacyConnectorLegacyEventHandler.class);
 
-    private final LegacyAuthorAuthorSyncEntryService legacyAuthorAuthorSyncEntryService;
+    private final AuthorLegacyAuthorSyncEntryService authorLegacyAuthorSyncEntryService;
 
     public void handleLegacyAuthorEvent(Object event, MessageHeaders headers) {
         final String eventType = Optional.ofNullable(event).map(Object::getClass).map(Class::getName).orElse(null);
@@ -33,15 +34,12 @@ public class LegacyConnectorLegacyEventHandler {
 
         if (event instanceof reeledlegacy.public$.author.Envelope authorEnvelope && authorEnvelope.getAfter() != null) {
             final reeledlegacy.public$.author.Value author = authorEnvelope.getAfter();
-            legacyAuthorAuthorSyncEntryService.upsert(author.getId(),
-                    mapToString(author.getName()),
-                    author.getTypeId(),
-                    mapToString(author.getBio()),
-                    mapToString(author.getImageUrl()));
+            authorLegacyAuthorSyncEntryService.sync(author.getId(),
+                    new LegacyAuthorData(mapToString(author.getName()), author.getTypeId(), mapToString(author.getBio()), mapToString(author.getImageUrl())));
         } else if (event instanceof reeledlegacy.public$.author.Envelope authorEnvelope
                 && authorEnvelope.getAfter() == null
                 && key instanceof reeledlegacy.public$.author.Key authorKey) {
-            legacyAuthorAuthorSyncEntryService.delete(authorKey.getId());
+            authorLegacyAuthorSyncEntryService.syncDeleteFromLegacy(authorKey.getId());
         } else {
             logger.debug("Ignored legacy author event (eventType: {}, key: {})", event, key);
         }

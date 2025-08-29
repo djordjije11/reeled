@@ -45,7 +45,7 @@ dependencies {
     // messaging
     implementation 'org.springframework.cloud:spring-cloud-stream'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
-    implementation 'io.github.djordjije11.reeled:reeled-integration-events:1.0.1'
+    implementation 'io.github.djordjije11.reeled:reeled-integration-events:1.0.3'
     implementation 'io.github.djordjije11.reeledlegacy:reeled-legacy-integration-events:1.0.0'
     implementation('io.confluent:kafka-avro-serializer:7.8.0') {
         // io.swagger.core.v3:swagger-annotations dependency conflict in org.springdoc:springdoc-openapi-starter-webmvc-api

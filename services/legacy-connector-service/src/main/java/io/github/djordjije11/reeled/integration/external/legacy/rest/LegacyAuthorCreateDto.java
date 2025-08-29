@@ -3,6 +3,6 @@ package io.github.djordjije11.reeled.integration.external.legacy.rest;
 /**
  * @author Djordjije Radovic
  */
-public record AuthorUpdateDto(String name, String bio, String imageUrl) {
+public record LegacyAuthorCreateDto(String name, Long typeId, String bio, String imageUrl) {
 
 }

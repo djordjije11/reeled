@@ -88,13 +88,13 @@ public class AuthorService {
     }
 
     @Retry(name = DATA_ACCESS_RETRY_NAME)
-    public void delete(Long id) {
+    public void delete(Long id, boolean legacy) {
         Assert.notNull(id, "id must not be null");
 
         logger.info("Deleting an author (id: {})...", id);
 
         final Author author = getAuthor(id);
-        author.delete(clock);
+        author.delete(legacy, clock);
 
         authorRepository.save(author);
 

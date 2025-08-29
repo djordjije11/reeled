@@ -41,6 +41,7 @@ public class Author extends AbstractAggregateRoot<Author> {
 
     private String imageUrl;
 
+    @Column(name = "is_legacy")
     private boolean legacy;
 
     @Column(name = "is_deleted")
@@ -85,8 +86,12 @@ public class Author extends AbstractAggregateRoot<Author> {
         registerAuthorUpsertedEvent();
     }
 
-    public void delete(Clock clock) {
+    public void delete(boolean legacy, Clock clock) {
         Assert.notNull(clock, "clock must not be null");
+
+        if (this.legacy != legacy) {
+            throw new ReeledDomainException("Author legacy status does not match deletion platform (id: %d)".formatted(id));
+        }
 
         if (deleted) {
             throw new ReeledDomainException("Author already deleted (id: %d)".formatted(id));

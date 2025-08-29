@@ -54,7 +54,9 @@ public class AuthorServiceClient {
     public void delete(Long id) {
         Assert.notNull(id, "id must not be null");
 
-        // TODO: CHECK IF IT WORKS
-        restTemplate.exchange(deleteUrl, HttpMethod.DELETE, null, Void.class, id);
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(X_REELED_LEGACY_IMPORT, "true");
+
+        restTemplate.exchange(deleteUrl, HttpMethod.DELETE, new HttpEntity<>(httpHeaders), Void.class, id);
     }
 }

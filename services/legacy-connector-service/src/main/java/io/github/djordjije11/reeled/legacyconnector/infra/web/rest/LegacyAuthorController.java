@@ -1,6 +1,7 @@
 package io.github.djordjije11.reeled.legacyconnector.infra.web.rest;
 
 import io.github.djordjije11.reeled.legacyconnector.application.AuthorLegacyAuthorSyncEntryService;
+import io.github.djordjije11.reeled.legacyconnector.domain.AuthorData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,10 +32,10 @@ public class LegacyAuthorController {
     @Operation(description = "Creates a legacy author")
     @ApiResponse(responseCode = "201", description = "Legacy author created")
     public ResponseEntity<Void> create(@RequestBody @Valid AuthorCreateDto authorCreateDto) {
-        final Long authorId = authorLegacyAuthorSyncEntryService.create(authorCreateDto.name(),
+        final Long authorId = authorLegacyAuthorSyncEntryService.createAuthor(new AuthorData(authorCreateDto.name(),
                 authorCreateDto.type(),
                 authorCreateDto.bio(),
-                authorCreateDto.imageUrl());
+                authorCreateDto.imageUrl()));
         return ResponseEntity.created(URI.create("/" + authorId.toString())).build();
     }
 }
