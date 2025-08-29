@@ -1,5 +1,6 @@
 package io.github.djordjije11.reeledlegacy.service;
 
+import io.github.djordjije11.reeledlegacy.commons.exception.NotFoundException;
 import io.github.djordjije11.reeledlegacy.model.Author;
 import io.github.djordjije11.reeledlegacy.model.AuthorType;
 import io.github.djordjije11.reeledlegacy.repository.AuthorRepository;
@@ -30,7 +31,7 @@ public class AuthorService {
         logger.info("Creating an author (name: {})...", name);
 
         final AuthorType authorType = authorTypeRepository.findById(typeId)
-                .orElseThrow(() -> new RuntimeException("Author type does not exist (id: %d)".formatted(typeId)));
+                .orElseThrow(() -> new NotFoundException("Author type does not exist (id: %d)".formatted(typeId)));
 
         final Author author = new Author();
         author.setName(name);
@@ -74,6 +75,6 @@ public class AuthorService {
     }
 
     private Author getAuthor(Long id) {
-        return authorRepository.findById(id).orElseThrow(() -> new RuntimeException("Author does not exist (id: %d)".formatted(id)));
+        return authorRepository.findById(id).orElseThrow(() -> new NotFoundException("Author does not exist (id: %d)".formatted(id)));
     }
 }

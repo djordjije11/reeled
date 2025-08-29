@@ -1,5 +1,6 @@
 package io.github.djordjije11.reeledlegacy.service;
 
+import io.github.djordjije11.reeledlegacy.commons.exception.NotFoundException;
 import io.github.djordjije11.reeledlegacy.model.AuthorProjection;
 import io.github.djordjije11.reeledlegacy.repository.AuthorQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,6 @@ public class AuthorQueryService {
     public AuthorProjection get(Long id) {
         Assert.notNull(id, "id must not be null");
 
-        return authorQueryRepository.findById(id).orElseThrow(() -> new RuntimeException("Author does not exist (id: %d)".formatted(id)));
+        return authorQueryRepository.findById(id).orElseThrow(() -> new NotFoundException("Author does not exist (id: %d)".formatted(id)));
     }
 }
