@@ -19,9 +19,12 @@ public class LegacyClient {
 
     private final String createAuthorUrl;
 
+    private final String updateAuthorUrl;
+
     public LegacyClient(RestTemplate restTemplate, String endpoint) {
         this.restTemplate = restTemplate;
         this.createAuthorUrl = endpoint + "/v1/authors";
+        this.updateAuthorUrl = endpoint + "/v1/authors/{authorId}";
     }
 
     public Long createAuthor(AuthorCreateDto authorCreateDto) {
@@ -35,5 +38,11 @@ public class LegacyClient {
                 .map(path -> path.replace("/", ""))
                 .map(Long::parseLong)
                 .orElseThrow(() -> new RuntimeException("Author id not found in response location header (response: %s)".formatted(response)));
+    }
+
+    public void updateAuthor(Long id, AuthorUpdateDto authorUpdateDto) {
+        Assert.notNull(authorUpdateDto, "authorUpdateDto must not be null");
+
+        restTemplate.exchange(updateAuthorUrl, HttpMethod.PUT, new HttpEntity<>(authorUpdateDto), Void.class, id);
     }
 }

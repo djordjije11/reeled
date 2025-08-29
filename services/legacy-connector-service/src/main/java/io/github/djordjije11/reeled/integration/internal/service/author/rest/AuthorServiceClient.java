@@ -1,6 +1,7 @@
 package io.github.djordjije11.reeled.integration.internal.service.author.rest;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
@@ -9,6 +10,10 @@ import org.springframework.web.client.RestTemplate;
  * @author Djordjije Radovic
  */
 public class AuthorServiceClient {
+
+    private static final String X_REELED_LEGACY_AUTHOR_ID = "X-Reeled-Legacy-Author-Id";
+
+    private static final String X_REELED_LEGACY_IMPORT = "X-Reeled-Legacy-Import";
 
     private final RestTemplate restTemplate;
 
@@ -25,17 +30,25 @@ public class AuthorServiceClient {
         this.deleteUrl = endpoint + "/v1/authors/{authorId}";
     }
 
-    public void create(AuthorCreateDto authorCreateDto) {
+    public void create(Long id, AuthorCreateDto authorCreateDto) {
+        Assert.notNull(id, "id must not be null");
         Assert.notNull(authorCreateDto, "authorCreateDto must not be null");
 
-        restTemplate.exchange(createUrl, HttpMethod.POST, new HttpEntity<>(authorCreateDto), Void.class);
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(X_REELED_LEGACY_AUTHOR_ID, id.toString());
+        httpHeaders.add(X_REELED_LEGACY_IMPORT, "true");
+
+        restTemplate.exchange(createUrl, HttpMethod.POST, new HttpEntity<>(authorCreateDto, httpHeaders), Void.class);
     }
 
     public void update(Long id, AuthorUpdateDto authorUpdateDto) {
         Assert.notNull(id, "id must not be null");
         Assert.notNull(authorUpdateDto, "authorUpdateDto must not be null");
 
-        restTemplate.exchange(updateUrl, HttpMethod.PUT, new HttpEntity<>(authorUpdateDto), Void.class, id);
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(X_REELED_LEGACY_IMPORT, "true");
+
+        restTemplate.exchange(updateUrl, HttpMethod.PUT, new HttpEntity<>(authorUpdateDto, httpHeaders), Void.class, id);
     }
 
     public void delete(Long id) {

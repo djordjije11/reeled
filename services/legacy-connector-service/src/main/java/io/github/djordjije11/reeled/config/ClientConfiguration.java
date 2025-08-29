@@ -1,5 +1,6 @@
 package io.github.djordjije11.reeled.config;
 
+import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyClient;
 import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorServiceClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -23,5 +24,10 @@ class ClientConfiguration {
     @Bean
     AuthorServiceClient authorServiceClient(RestTemplate restTemplate, @Value("${reeled.integration.internal.service.author.rest.endpoint}") String endpoint) {
         return new AuthorServiceClient(restTemplate, endpoint);
+    }
+
+    @Bean
+    LegacyClient legacyClient(RestTemplate restTemplate, @Value("${reeled.integration.external.legacy.rest.endpoint}") String endpoint) {
+        return new LegacyClient(restTemplate, endpoint);
     }
 }

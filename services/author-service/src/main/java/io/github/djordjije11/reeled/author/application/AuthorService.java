@@ -61,10 +61,10 @@ public class AuthorService {
     }
 
     @Retry(name = DATA_ACCESS_RETRY_NAME)
-    public Long create(Long id, String name, AuthorType type, String bio, String imageUrl) {
+    public Long create(Long id, String name, AuthorType type, String bio, String imageUrl, boolean legacy) {
         logger.info("Creating an author (name: {})...", name);
 
-        final Author author = authorFactory.create(id, name, type, bio, imageUrl);
+        final Author author = authorFactory.create(id, name, type, bio, imageUrl, legacy);
 
         authorRepository.save(author);
 
@@ -74,13 +74,13 @@ public class AuthorService {
     }
 
     @Retry(name = DATA_ACCESS_RETRY_NAME)
-    public void update(Long id, String name, String bio, String imageUrl) {
+    public void update(Long id, String name, String bio, String imageUrl, boolean legacy) {
         Assert.notNull(id, "id must not be null");
 
         logger.info("Updating an author (id: {})...", id);
 
         final Author author = getAuthor(id);
-        author.update(name, bio, imageUrl);
+        author.update(name, bio, imageUrl, legacy);
 
         authorRepository.save(author);
 

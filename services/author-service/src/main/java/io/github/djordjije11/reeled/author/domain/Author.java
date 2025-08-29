@@ -41,6 +41,8 @@ public class Author extends AbstractAggregateRoot<Author> {
 
     private String imageUrl;
 
+    private boolean legacy;
+
     @Column(name = "is_deleted")
     private boolean deleted;
 
@@ -49,7 +51,7 @@ public class Author extends AbstractAggregateRoot<Author> {
     @Version
     private Long version;
 
-    Author(Long id, String name, AuthorType type, String bio, String imageUrl) {
+    Author(Long id, String name, AuthorType type, String bio, String imageUrl, boolean legacy) {
         Assert.notNull(id, "id must not be null");
         Assert.hasText(name, "name must not be empty");
         Assert.notNull(type, "type must not be null");
@@ -59,12 +61,17 @@ public class Author extends AbstractAggregateRoot<Author> {
         this.type = type;
         this.bio = bio;
         this.imageUrl = imageUrl;
+        this.legacy = legacy;
 
         registerAuthorUpsertedEvent();
     }
 
-    public void update(String name, String bio, String imageUrl) {
+    public void update(String name, String bio, String imageUrl, boolean legacy) {
         Assert.hasText(name, "name must not be empty");
+
+        if (!this.legacy && legacy) {
+            throw new ReeledDomainException("Author is not legacy and cannot be updated from legacy (id: %d)".formatted(id));
+        }
 
         if (this.name.equals(name) && Objects.equals(this.bio, bio) && Objects.equals(this.imageUrl, imageUrl)) {
             return;
@@ -73,6 +80,7 @@ public class Author extends AbstractAggregateRoot<Author> {
         this.name = name;
         this.bio = bio;
         this.imageUrl = imageUrl;
+        this.legacy = legacy;
 
         registerAuthorUpsertedEvent();
     }

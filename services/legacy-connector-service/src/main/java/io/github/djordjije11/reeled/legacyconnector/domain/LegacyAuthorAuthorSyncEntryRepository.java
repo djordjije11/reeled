@@ -11,7 +11,7 @@ public interface LegacyAuthorAuthorSyncEntryRepository extends Repository<Legacy
 
     Optional<LegacyAuthorAuthorSyncEntry> findById(Long id);
 
-    void save(LegacyAuthorAuthorSyncEntry entry);
+    void save(LegacyAuthorAuthorSyncEntry syncEntry);
 
-    void delete(LegacyAuthorAuthorSyncEntry entry);
+    void delete(LegacyAuthorAuthorSyncEntry syncEntry);
 }

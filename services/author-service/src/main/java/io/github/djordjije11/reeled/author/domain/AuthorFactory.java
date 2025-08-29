@@ -1,9 +1,8 @@
 package io.github.djordjije11.reeled.author.domain;
 
 import io.github.djordjije11.reeled.codes.AuthorCodes.AuthorType;
-import io.github.djordjije11.reeled.codes.AuthorCodesLegacyLookupMappings;
-import io.github.djordjije11.reeled.integration.external.legacy.rest.AuthorCreateDto;
-import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyClient;
+import io.github.djordjije11.reeled.integration.internal.service.legacyconnector.rest.AuthorCreateDto;
+import io.github.djordjije11.reeled.integration.internal.service.legacyconnector.rest.LegacyConnectorServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,19 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorFactory {
 
-    private final AuthorRepository authorRepository;
+    private final LegacyConnectorServiceClient legacyConnectorServiceClient;
 
-    private final LegacyClient legacyClient;
-
-    public Author create(Long id, String name, AuthorType type, String bio, String imageUrl) {
+    public Author create(Long id, String name, AuthorType type, String bio, String imageUrl, boolean legacy) {
         if (id == null) {
-            final Long legacyAuthorId = legacyClient.createAuthor(new AuthorCreateDto(name,
-                    AuthorCodesLegacyLookupMappings.AUTHOR_TYPE_AUTHOR_TYPE_ID_MAP.get(type),
-                    bio,
-                    imageUrl));
-            return new Author(legacyAuthorId, name, type, bio, imageUrl);
+            final Long legacyAuthorId = legacyConnectorServiceClient.createAuthor(new AuthorCreateDto(name, type, bio, imageUrl));
+            return new Author(legacyAuthorId, name, type, bio, imageUrl, legacy);
         } else {
-            return new Author(id, name, type, bio, imageUrl);
+            return new Author(id, name, type, bio, imageUrl, legacy);
         }
     }
 }

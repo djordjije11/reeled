@@ -144,6 +144,8 @@ error.handling:
 
 # Integration with services
 reeled.integration:
+  external:
+    legacy.rest.endpoint: http://reeled-legacy:8080/api
   internal.service:
     author:
       rest.endpoint: http://author-service:8080/api

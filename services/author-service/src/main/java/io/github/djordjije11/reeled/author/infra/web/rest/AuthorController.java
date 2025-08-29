@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,20 +39,25 @@ public class AuthorController {
     @PostMapping("/authors")
     @Operation(description = "Creates an author")
     @ApiResponse(responseCode = "201", description = "Author created")
-    public ResponseEntity<Void> create(@RequestBody @Valid AuthorCreateDto authorCreateDto) {
-        final Long authorId = authorService.create(authorCreateDto.id(),
+    public ResponseEntity<Void> create(@RequestBody @Valid AuthorCreateDto authorCreateDto,
+                                       @RequestHeader(name = "X-Reeled-Legacy-Author-Id", required = false) Long authorId,
+                                       @RequestHeader(name = "X-Reeled-Legacy-Import", required = false) boolean legacy) {
+        final Long id = authorService.create(authorId,
                 authorCreateDto.name(),
                 authorCreateDto.type(),
                 authorCreateDto.bio(),
-                authorCreateDto.imageUrl());
-        return ResponseEntity.created(URI.create("/" + authorId.toString())).build();
+                authorCreateDto.imageUrl(),
+                legacy);
+        return ResponseEntity.created(URI.create("/" + id.toString())).build();
     }
 
     @PutMapping("/authors/{authorId}")
     @Operation(description = "Updates an author")
     @ApiResponse(responseCode = "204", description = "Author updated")
-    public ResponseEntity<Void> update(@PathVariable Long authorId, @RequestBody @Valid AuthorUpdateDto authorUpdateDto) {
-        authorService.update(authorId, authorUpdateDto.name(), authorUpdateDto.bio(), authorUpdateDto.imageUrl());
+    public ResponseEntity<Void> update(@PathVariable Long authorId,
+                                       @RequestBody @Valid AuthorUpdateDto authorUpdateDto,
+                                       @RequestHeader(name = "Reeled-Legacy-Import", required = false) boolean legacy) {
+        authorService.update(authorId, authorUpdateDto.name(), authorUpdateDto.bio(), authorUpdateDto.imageUrl(), legacy);
         return ResponseEntity.noContent().build();
     }
 

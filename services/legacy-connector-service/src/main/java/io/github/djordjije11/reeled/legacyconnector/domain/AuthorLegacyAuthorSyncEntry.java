@@ -1,9 +1,10 @@
 package io.github.djordjije11.reeled.legacyconnector.domain;
 
+import io.github.djordjije11.reeled.codes.AuthorCodes.AuthorType;
 import io.github.djordjije11.reeled.codes.AuthorCodesLegacyLookupMappings;
-import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorCreateDto;
-import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorServiceClient;
-import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorUpdateDto;
+import io.github.djordjije11.reeled.integration.external.legacy.rest.AuthorCreateDto;
+import io.github.djordjije11.reeled.integration.external.legacy.rest.AuthorUpdateDto;
+import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyClient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -25,15 +26,15 @@ import java.util.Objects;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "lc_legacy_author_author_sync_entry")
-public class LegacyAuthorAuthorSyncEntry {
+@Table(name = "lc_author_legacy_author_sync_entry")
+public class AuthorLegacyAuthorSyncEntry {
 
     @Id
     private Long id;
 
     private String name;
 
-    private Long typeId;
+    private AuthorType type;
 
     private String bio;
 
@@ -42,28 +43,25 @@ public class LegacyAuthorAuthorSyncEntry {
     @Version
     private Long version;
 
-    public LegacyAuthorAuthorSyncEntry(Long id, String name, Long typeId, String bio, String imageUrl, AuthorServiceClient authorServiceClient) {
-        Assert.notNull(id, "id must not be null");
+    public AuthorLegacyAuthorSyncEntry(String name, AuthorType type, String bio, String imageUrl, LegacyClient legacyClient) {
         Assert.hasText(name, "name must be provided");
-        Assert.notNull(typeId, "typeId must not be null");
+        Assert.notNull(type, "type must not be null");
 
-        authorServiceClient.create(id, new AuthorCreateDto(name, AuthorCodesLegacyLookupMappings.AUTHOR_TYPE_ID_AUTHOR_TYPE_MAP.get(typeId), bio, imageUrl));
-
-        this.id = id;
+        this.id = legacyClient.createAuthor(new AuthorCreateDto(name, AuthorCodesLegacyLookupMappings.AUTHOR_TYPE_AUTHOR_TYPE_ID_MAP.get(type), bio, imageUrl));
         this.name = name;
-        this.typeId = typeId;
+        this.type = type;
         this.bio = bio;
         this.imageUrl = imageUrl;
     }
 
-    public void update(String name, String bio, String imageUrl, AuthorServiceClient authorServiceClient) {
+    public void update(String name, String bio, String imageUrl, LegacyClient legacyClient) {
         Assert.hasText(name, "name must be provided");
 
         if (this.name.equals(name) && Objects.equals(this.bio, bio) && Objects.equals(this.imageUrl, imageUrl)) {
             return;
         }
 
-        authorServiceClient.update(id, new AuthorUpdateDto(name, bio, imageUrl));
+        legacyClient.updateAuthor(id, new AuthorUpdateDto(name, bio, imageUrl));
 
         this.name = name;
         this.bio = bio;

@@ -27,9 +27,9 @@ public class LegacyAuthorAuthorSyncEntryService {
 
         logger.info("Upserting legacy author author sync entry (id: {})...", id);
 
-        legacyAuthorAuthorSyncEntryRepository.findById(id).ifPresentOrElse(entry -> {
-            entry.update(name, bio, imageUrl, authorServiceClient);
-            legacyAuthorAuthorSyncEntryRepository.save(entry);
+        legacyAuthorAuthorSyncEntryRepository.findById(id).ifPresentOrElse(syncEntry -> {
+            syncEntry.update(name, bio, imageUrl, authorServiceClient);
+            legacyAuthorAuthorSyncEntryRepository.save(syncEntry);
         }, () -> legacyAuthorAuthorSyncEntryRepository.save(new LegacyAuthorAuthorSyncEntry(id, name, typeId, bio, imageUrl, authorServiceClient)));
 
         logger.info("Legacy author author sync entry successfully upserted (id: {})", id);
@@ -40,9 +40,9 @@ public class LegacyAuthorAuthorSyncEntryService {
 
         logger.info("Deleting legacy author author sync entry (id: {})...", id);
 
-        legacyAuthorAuthorSyncEntryRepository.findById(id).ifPresent(entry -> {
+        legacyAuthorAuthorSyncEntryRepository.findById(id).ifPresent(syncEntry -> {
             authorServiceClient.delete(id);
-            legacyAuthorAuthorSyncEntryRepository.delete(entry);
+            legacyAuthorAuthorSyncEntryRepository.delete(syncEntry);
         });
 
         logger.info("Legacy author author sync entry successfully deleted (id: {})", id);

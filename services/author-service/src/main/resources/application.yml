@@ -122,6 +122,7 @@ error.handling:
 
 # Integration with services
 reeled.integration:
-  external:
-    legacy:
-      rest.endpoint: http://reeled-legacy/api
+  internal:
+    service:
+      legacy-connector:
+        rest.endpoint: http://legacy-connector-service:8080/api
