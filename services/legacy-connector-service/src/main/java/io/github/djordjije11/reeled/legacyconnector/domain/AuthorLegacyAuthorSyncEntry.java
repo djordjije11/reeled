@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeled.legacyconnector.domain;
 
-import io.github.djordjije11.reeled.codes.AuthorCodesLegacyLookupMappings;
 import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyAuthorCreateDto;
 import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyAuthorUpdateDto;
 import io.github.djordjije11.reeled.integration.external.legacy.rest.LegacyClient;

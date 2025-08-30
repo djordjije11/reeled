@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 /**
  * @author Djordjije Radovic
  */
+// TODO: REMOVE THIS
 public class AuthorCodesLegacyLookupMappings {
 
     public static final Map<Long, AuthorType> AUTHOR_TYPE_ID_AUTHOR_TYPE_MAP = Map.of(1001L, AuthorType.PERSONAL, 1002L, AuthorType.BUSINESS);
