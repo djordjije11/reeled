@@ -121,3 +121,10 @@ error.handling:
     com.fasterxml.jackson.databind.JsonMappingException: BAD_REQUEST
     org.springframework.security.authorization.AuthorizationDeniedException: FORBIDDEN
     io.github.djordjije11.reeled.commons.exception.NotFoundException: NOT_FOUND
+
+# Integration with services
+reeled.integration:
+  internal:
+    service:
+      author:
+        rest.endpoint: http://author-service:8080/api
