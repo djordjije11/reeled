@@ -40,9 +40,10 @@ The Gateway Swagger UI provides access to all endpoints, while each service also
 Services are available at the following ports:
 
 - [Gateway](http://localhost:8080/swagger-ui/index.html) at port `8080`
-- [Author Service](http://localhost:8082/swagger-ui/index.html) at port `8085`
-- [Post Service](http://localhost:8083/swagger-ui/index.html) at port `8086`
-- [Post Metrics Service](http://localhost:8084/swagger-ui/index.html) at port `8087`
+- [Legacy](http://localhost:8084/swagger-ui/index.html) at port `8084`
+- [Author Service](http://localhost:8085/swagger-ui/index.html) at port `8085`
+- [Post Service](http://localhost:8086/swagger-ui/index.html) at port `8086`
+- [Post Metrics Service](http://localhost:8087/swagger-ui/index.html) at port `8087`
 
 ### Additional notes
 

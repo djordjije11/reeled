@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 
 /**
  * To import mock data, you can use the following steps:
- * 1  Export new test_post.csv file if missing, with a query: SELECT id FROM pm_post;
+ * 1. Export new test_post.csv file if missing, with a query: SELECT id FROM pm_post;
  * 2. Uncomment @Test annotation and run this test to generate CSV files
  * 3. Import generated CSV files
  *
