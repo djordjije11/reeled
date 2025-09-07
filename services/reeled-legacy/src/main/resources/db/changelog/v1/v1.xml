@@ -28,31 +28,24 @@
 
     <changeSet id="1.24.1.2" author="djordjijeradovic24@gmail.com">
         <insert tableName="post_category">
-            <column name="id" value="1001"/>
             <column name="name" value="comedy"/>
         </insert>
         <insert tableName="post_category">
-            <column name="id" value="1002"/>
             <column name="name" value="education"/>
         </insert>
         <insert tableName="post_category">
-            <column name="id" value="1003"/>
             <column name="name" value="entertainment"/>
         </insert>
         <insert tableName="post_category">
-            <column name="id" value="1004"/>
             <column name="name" value="film"/>
         </insert>
         <insert tableName="post_category">
-            <column name="id" value="1005"/>
             <column name="name" value="gaming"/>
         </insert>
         <insert tableName="post_category">
-            <column name="id" value="1006"/>
             <column name="name" value="music"/>
         </insert>
         <insert tableName="post_category">
-            <column name="id" value="1007"/>
             <column name="name" value="news"/>
         </insert>
     </changeSet>
@@ -70,11 +63,9 @@
 
     <changeSet id="1.24.1.4" author="djordjijeradovic24@gmail.com">
         <insert tableName="author_type">
-            <column name="id" value="1001"/>
             <column name="name" value="personal"/>
         </insert>
         <insert tableName="author_type">
-            <column name="id" value="1002"/>
             <column name="name" value="business"/>
         </insert>
     </changeSet>
