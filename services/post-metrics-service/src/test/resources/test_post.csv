@@ -1,4 +1,4 @@
-id,author_id,category,duration,is_monetized,title,video_url,is_deleted
+id,author_id,category_key,duration,is_monetized,title,video_url,is_deleted
 1,6159,film,9314699254,True,Video Title 1,https://video.platform/video/1,False
 2,6159,education,2022111191,True,Video Title 2,https://video.platform/video/2,False
 3,6159,comedy,9089884040,True,Video Title 3,https://video.platform/video/3,False
