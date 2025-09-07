@@ -10,7 +10,7 @@
             <column name="author_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="category" type="VARCHAR(32)">
+            <column name="category_key" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>
             <column name="duration" type="BIGINT">
@@ -71,7 +71,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="author_id" type="BIGINT"/>
-            <column name="category" type="VARCHAR(32)"/>
+            <column name="category_key" type="VARCHAR(32)"/>
             <column name="duration" type="BIGINT"/>
             <column name="is_monetized" type="BOOLEAN"/>
             <column name="search_appearances" type="BIGINT">

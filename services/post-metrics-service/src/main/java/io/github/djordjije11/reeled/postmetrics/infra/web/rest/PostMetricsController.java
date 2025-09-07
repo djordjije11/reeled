@@ -72,7 +72,7 @@ public class PostMetricsController {
                 searchDto.query().dateTo(),
                 searchDto.query().durationFrom(),
                 searchDto.query().durationTo(),
-                searchDto.query().categories(),
+                searchDto.query().categoryKeys(),
                 searchDto.query().monetized()));
     }
 }

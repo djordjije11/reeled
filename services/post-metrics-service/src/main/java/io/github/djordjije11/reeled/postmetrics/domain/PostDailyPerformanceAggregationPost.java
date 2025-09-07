@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeled.postmetrics.domain;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -26,21 +25,21 @@ public class PostDailyPerformanceAggregationPost {
 
     private Long authorId;
 
-    private PostCategory category;
+    private String categoryKey;
 
     private Duration duration;
 
     @Column(name = "is_monetized")
     private boolean monetized;
 
-    public PostDailyPerformanceAggregationPost(Long authorId, PostCategory category, Duration duration, Boolean monetized) {
+    public PostDailyPerformanceAggregationPost(Long authorId, String categoryKey, Duration duration, Boolean monetized) {
         Assert.notNull(authorId, "authorId must not be null");
-        Assert.notNull(category, "category must not be null");
+        Assert.hasText(categoryKey, "categoryKey must be provided");
         Assert.notNull(duration, "duration must not be null");
         Assert.notNull(monetized, "monetized must not be null");
 
         this.authorId = authorId;
-        this.category = category;
+        this.categoryKey = categoryKey;
         this.duration = duration;
         this.monetized = monetized;
     }

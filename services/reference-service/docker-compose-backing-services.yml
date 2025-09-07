@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres:16.2
+    restart: always
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_DB: reference
+      POSTGRES_USER: reference
+      POSTGRES_PASSWORD: reference_password

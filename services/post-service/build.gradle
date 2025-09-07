@@ -45,7 +45,7 @@ dependencies {
     // messaging
     implementation 'org.springframework.cloud:spring-cloud-stream'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
-    implementation 'io.github.djordjije11.reeled:reeled-integration-events:1.0.3'
+    implementation 'io.github.djordjije11.reeled:reeled-integration-events:1.0.4'
     implementation('io.confluent:kafka-avro-serializer:7.8.0') {
         // io.swagger.core.v3:swagger-annotations dependency conflict in org.springdoc:springdoc-openapi-starter-webmvc-api
         exclude group: "io.swagger.core.v3", module: "swagger-annotations"
@@ -58,8 +58,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
-    implementation 'io.github.djordjije11.reeled:reeled-commons:1.0.7'
-    implementation 'io.github.djordjije11.reeled:reeled-codes:1.0.3'
+    implementation 'io.github.djordjije11.reeled:reeled-commons:1.0.8'
+    implementation 'io.github.djordjije11.reeled:reeled-codes:1.0.5'
 
     // scheduling
     implementation 'net.javacrumbs.shedlock:shedlock-spring:6.0.2'

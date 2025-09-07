@@ -128,3 +128,5 @@ reeled.integration:
     service:
       author:
         rest.endpoint: http://author-service:8080/api
+      reference:
+        rest.endpoint: http://reference-service:8080/api

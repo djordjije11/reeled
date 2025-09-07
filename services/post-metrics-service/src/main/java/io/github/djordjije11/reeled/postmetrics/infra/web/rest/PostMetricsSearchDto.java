@@ -1,7 +1,7 @@
 package io.github.djordjije11.reeled.postmetrics.infra.web.rest;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.Duration;
@@ -17,7 +17,7 @@ public record PostMetricsSearchDto(@Valid @NotNull Query query) {
                         @NotNull LocalDate dateTo,
                         Duration durationFrom,
                         Duration durationTo,
-                        Set<@NotNull PostCategory> categories,
+                        Set<@NotBlank String> categoryKeys,
                         Boolean monetized) {
 
     }

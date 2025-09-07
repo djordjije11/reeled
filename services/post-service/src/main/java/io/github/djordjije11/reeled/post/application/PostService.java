@@ -1,8 +1,8 @@
 package io.github.djordjije11.reeled.post.application;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import io.github.djordjije11.reeled.commons.exception.NotFoundException;
 import io.github.djordjije11.reeled.post.domain.Post;
+import io.github.djordjije11.reeled.post.domain.PostCategoryService;
 import io.github.djordjije11.reeled.post.domain.PostFactory;
 import io.github.djordjije11.reeled.post.domain.PostPurged;
 import io.github.djordjije11.reeled.post.domain.PostRepository;
@@ -42,6 +42,8 @@ public class PostService {
 
     private final PostSupportRepository postSupportRepository;
 
+    private final PostCategoryService postCategoryService;
+
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private final io.github.resilience4j.retry.Retry dataAccessRetry;
@@ -51,22 +53,24 @@ public class PostService {
     public PostService(PostFactory postFactory,
                        PostRepository postRepository,
                        PostSupportRepository postSupportRepository,
+                       PostCategoryService postCategoryService,
                        ApplicationEventPublisher applicationEventPublisher,
                        RetryRegistry retryRegistry,
                        ClockProvider clockProvider) {
         this.postFactory = postFactory;
         this.postRepository = postRepository;
         this.postSupportRepository = postSupportRepository;
+        this.postCategoryService = postCategoryService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.dataAccessRetry = retryRegistry.retry(DATA_ACCESS_RETRY_NAME);
         this.clock = clockProvider.getClock();
     }
 
     @Retry(name = DATA_ACCESS_RETRY_NAME)
-    public Long create(Long authorId, PostCategory category, String description, Duration duration, Boolean monetized, String title, String videoUrl) {
+    public Long create(Long authorId, String categoryKey, String description, Duration duration, Boolean monetized, String title, String videoUrl) {
         logger.info("Creating a post (authorId: {}, title: {})...", authorId, title);
 
-        final Post post = postFactory.create(authorId, category, description, duration, monetized, title, videoUrl);
+        final Post post = postFactory.create(authorId, categoryKey, description, duration, monetized, title, videoUrl);
 
         postRepository.save(post);
 
@@ -76,14 +80,14 @@ public class PostService {
     }
 
     @Retry(name = DATA_ACCESS_RETRY_NAME)
-    public void update(Long id, Long authorId, PostCategory category, String description, String title) {
+    public void update(Long id, Long authorId, String categoryKey, String description, String title) {
         Assert.notNull(id, "id must not be null");
         Assert.notNull(authorId, "authorId must not be null");
 
         logger.info("Updating a post (id: {}, authorId: {})...", id, authorId);
 
         final Post post = getPost(id, authorId);
-        post.update(category, description, title);
+        post.update(categoryKey, description, title, postCategoryService);
 
         postRepository.save(post);
 

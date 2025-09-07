@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeled.post.domain;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import io.github.djordjije11.reeled.commons.exception.NotFoundException;
 import io.github.djordjije11.reeled.integration.internal.service.author.rest.AuthorServiceClient;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +23,13 @@ public class PostFactory {
 
     private final AuthorServiceClient authorServiceClient;
 
-    public Post create(Long authorId, PostCategory category, String description, Duration duration, Boolean monetized, String title, String videoUrl) {
-        checkAuthorExists(authorId);
+    private final PostCategoryService postCategoryService;
 
-        return new Post(postRepository.nextId(), authorId, category, description, duration, monetized, title, videoUrl);
+    public Post create(Long authorId, String categoryKey, String description, Duration duration, Boolean monetized, String title, String videoUrl) {
+        checkAuthorExists(authorId);
+        postCategoryService.checkCategoryExists(categoryKey);
+
+        return new Post(postRepository.nextId(), authorId, categoryKey, description, duration, monetized, title, videoUrl);
     }
 
     private void checkAuthorExists(Long authorId) {

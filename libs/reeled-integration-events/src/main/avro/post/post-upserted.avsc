@@ -8,7 +8,7 @@
       "type": "long"
     },
     {
-      "name": "category",
+      "name": "categoryKey",
       "type": "string"
     },
     {

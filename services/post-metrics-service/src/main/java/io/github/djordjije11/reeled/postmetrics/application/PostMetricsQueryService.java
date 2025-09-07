@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeled.postmetrics.application;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import io.github.djordjije11.reeled.postmetrics.query.PostDailyMetricsProjection;
 import io.github.djordjije11.reeled.postmetrics.query.PostDailyPerformanceAggregationQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +25,12 @@ public class PostMetricsQueryService {
                                                    LocalDate dateTo,
                                                    Duration durationFrom,
                                                    Duration durationTo,
-                                                   Set<PostCategory> categories,
+                                                   Set<String> categoryKeys,
                                                    Boolean monetized) {
         Assert.notNull(authorId, "authorId must not be null");
         Assert.notNull(dateFrom, "dateFrom must not be null");
         Assert.notNull(dateTo, "dateTo must not be null");
 
-        return postDailyPerformanceAggregationQueryRepository.searchDailyMetrics(authorId, dateFrom, dateTo, durationFrom, durationTo, categories, monetized);
+        return postDailyPerformanceAggregationQueryRepository.searchDailyMetrics(authorId, dateFrom, dateTo, durationFrom, durationTo, categoryKeys, monetized);
     }
 }

@@ -13,7 +13,7 @@ public interface PostQueryRepository extends Repository<Post, Long> {
 
     @Query("""
             SELECT new io.github.djordjije11.reeled.post.query.PostProjection(
-                        category,
+                        categoryKey,
                         description,
                         duration,
                         title,

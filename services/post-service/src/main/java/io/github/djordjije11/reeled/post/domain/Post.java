@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeled.post.domain;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import io.github.djordjije11.reeled.commons.exception.ReeledDomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +35,7 @@ public class Post extends AbstractAggregateRoot<Post> {
 
     private Long authorId;
 
-    private PostCategory category;
+    private String categoryKey;
 
     private String description;
 
@@ -57,10 +56,10 @@ public class Post extends AbstractAggregateRoot<Post> {
     @Version
     private Long version;
 
-    Post(Long id, Long authorId, PostCategory category, String description, Duration duration, Boolean monetized, String title, String videoUrl) {
+    Post(Long id, Long authorId, String categoryKey, String description, Duration duration, Boolean monetized, String title, String videoUrl) {
         Assert.notNull(id, "id must not be null");
         Assert.notNull(authorId, "authorId must not be null");
-        Assert.notNull(category, "category must not be null");
+        Assert.notNull(categoryKey, "categoryKey must not be null");
         Assert.notNull(duration, "duration must not be null");
         Assert.notNull(monetized, "monetized must not be null");
         Assert.hasText(title, "title must not be empty");
@@ -68,7 +67,7 @@ public class Post extends AbstractAggregateRoot<Post> {
 
         this.id = id;
         this.authorId = authorId;
-        this.category = category;
+        this.categoryKey = categoryKey;
         this.description = description;
         this.duration = duration;
         this.monetized = monetized;
@@ -78,15 +77,18 @@ public class Post extends AbstractAggregateRoot<Post> {
         registerPostUpsertedEvent();
     }
 
-    public void update(PostCategory category, String description, String title) {
-        Assert.notNull(category, "category must not be null");
+    public void update(String categoryKey, String description, String title, PostCategoryService postCategoryService) {
+        Assert.notNull(categoryKey, "categoryKey must not be null");
         Assert.hasText(title, "title must not be empty");
+        Assert.notNull(postCategoryService, "postCategoryService must not be null");
 
-        if (this.category.equals(category) && Objects.equals(this.description, description) && this.title.equals(title)) {
+        if (this.categoryKey.equals(categoryKey) && Objects.equals(this.description, description) && this.title.equals(title)) {
             return;
         }
 
-        this.category = category;
+        postCategoryService.checkCategoryExists(categoryKey);
+
+        this.categoryKey = categoryKey;
         this.description = description;
         this.title = title;
 

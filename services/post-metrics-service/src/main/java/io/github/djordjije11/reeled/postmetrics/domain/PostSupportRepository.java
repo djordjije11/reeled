@@ -13,7 +13,7 @@ public interface PostSupportRepository extends Repository<Post, Long> {
     @Query("""
             SELECT new io.github.djordjije11.reeled.postmetrics.domain.PostProjection(
                         data.authorId,
-                        data.category,
+                        data.categoryKey,
                         data.duration,
                         data.monetized)
             FROM Post

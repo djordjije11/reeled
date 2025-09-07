@@ -1,0 +1,40 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="1.24.1.0" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="r_post_category">
+            <column name="id" type="BIGSERIAL" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_r_post_category"/>
+            </column>
+            <column name="key" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="r_post_category" columnNames="key" constraintName="uq_r_post_category_key"/>
+    </changeSet>
+
+    <changeSet id="1.24.1.1" author="djordjijeradovic24@gmail.com">
+        <insert tableName="r_post_category">
+            <column name="key" value="comedy"/>
+        </insert>
+        <insert tableName="r_post_category">
+            <column name="key" value="education"/>
+        </insert>
+        <insert tableName="r_post_category">
+            <column name="key" value="entertainment"/>
+        </insert>
+        <insert tableName="r_post_category">
+            <column name="key" value="film"/>
+        </insert>
+        <insert tableName="r_post_category">
+            <column name="key" value="gaming"/>
+        </insert>
+        <insert tableName="r_post_category">
+            <column name="key" value="music"/>
+        </insert>
+        <insert tableName="r_post_category">
+            <column name="key" value="news"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

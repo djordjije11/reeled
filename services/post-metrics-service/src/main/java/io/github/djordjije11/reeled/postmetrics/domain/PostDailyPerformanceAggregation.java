@@ -82,7 +82,7 @@ public class PostDailyPerformanceAggregation {
 
     private PostDailyPerformanceAggregationPost getPost(PostSupportRepository postSupportRepository) {
         return postSupportRepository.findById(key.getPostId())
-                .map(p -> new PostDailyPerformanceAggregationPost(p.authorId(), p.category(), p.duration(), p.monetized()))
+                .map(p -> new PostDailyPerformanceAggregationPost(p.authorId(), p.categoryKey(), p.duration(), p.monetized()))
                 .orElse(null);
     }
 }

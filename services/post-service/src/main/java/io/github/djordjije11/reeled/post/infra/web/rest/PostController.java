@@ -40,7 +40,7 @@ public class PostController {
     @ApiResponse(responseCode = "201", description = "Post created")
     public ResponseEntity<Void> create(@PathVariable Long authorId, @RequestBody @Valid PostCreateDto postCreateDto) {
         final Long postId = postService.create(authorId,
-                postCreateDto.category(),
+                postCreateDto.categoryKey(),
                 postCreateDto.description(),
                 postCreateDto.duration(),
                 postCreateDto.monetized(),
@@ -54,7 +54,7 @@ public class PostController {
     @Operation(description = "Updates a post for an author")
     @ApiResponse(responseCode = "204", description = "Post updated")
     public ResponseEntity<Void> update(@PathVariable Long authorId, @PathVariable Long postId, @RequestBody @Valid PostUpdateDto postUpdateDto) {
-        postService.update(postId, authorId, postUpdateDto.category(), postUpdateDto.description(), postUpdateDto.title());
+        postService.update(postId, authorId, postUpdateDto.categoryKey(), postUpdateDto.description(), postUpdateDto.title());
 
         return ResponseEntity.noContent().build();
     }

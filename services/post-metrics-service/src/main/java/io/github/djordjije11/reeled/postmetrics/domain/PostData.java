@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeled.postmetrics.domain;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -24,7 +23,7 @@ public class PostData {
 
     private Long authorId;
 
-    private PostCategory category;
+    private String categoryKey;
 
     private Duration duration;
 
@@ -35,16 +34,16 @@ public class PostData {
 
     private String videoUrl;
 
-    public PostData(Long authorId, PostCategory category, Duration duration, Boolean monetized, String title, String videoUrl) {
+    public PostData(Long authorId, String categoryKey, Duration duration, Boolean monetized, String title, String videoUrl) {
         Assert.notNull(authorId, "authorId must not be null");
-        Assert.notNull(category, "category must not be null");
+        Assert.hasText(categoryKey, "categoryKey must be provided");
         Assert.notNull(duration, "duration must not be null");
         Assert.notNull(monetized, "monetized must not be null");
         Assert.hasText(title, "title must not be empty");
         Assert.hasText(videoUrl, "videoUrl must not be empty");
 
         this.authorId = authorId;
-        this.category = category;
+        this.categoryKey = categoryKey;
         this.duration = duration;
         this.monetized = monetized;
         this.title = title;

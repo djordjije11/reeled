@@ -1,6 +1,5 @@
 package io.github.djordjije11.reeled.postmetrics.query;
 
-import io.github.djordjije11.reeled.codes.PostCodes.PostCategory;
 import io.github.djordjije11.reeled.postmetrics.domain.PostDailyPerformanceAggregation;
 import io.github.djordjije11.reeled.postmetrics.domain.PostDailyPerformanceAggregationKey;
 import org.springframework.data.jpa.repository.Query;
@@ -29,7 +28,7 @@ public interface PostDailyPerformanceAggregationQueryRepository extends Reposito
                 AND key.date < :dateTo
                 AND ((:durationFrom) IS NULL OR post.duration >= :durationFrom)
                 AND ((:durationTo) IS NULL OR post.duration < :durationTo)
-                AND ((:categories) IS NULL OR post.category IN :categories)
+                AND ((:categoryKeys) IS NULL OR post.categoryKey IN :categoryKeys)
                 AND ((:monetized) IS NULL OR post.monetized = :monetized)
             GROUP BY key.date
             ORDER BY key.date""")
@@ -38,7 +37,7 @@ public interface PostDailyPerformanceAggregationQueryRepository extends Reposito
                                                         LocalDate dateTo,
                                                         Duration durationFrom,
                                                         Duration durationTo,
-                                                        Set<PostCategory> categories,
+                                                        Set<String> categoryKeys,
                                                         Boolean monetized);
 
     @Query("""

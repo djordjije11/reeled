@@ -4,6 +4,7 @@ reeled.gateway.internal-services:
   author-service.url: http://localhost:8082
   post-service.url: http://localhost:8083
   post-metrics-service.url: http://localhost:8084
+  reference-service.url: http://localhost:8087
 
 spring.cloud.gateway:
   httpclient:
@@ -66,7 +67,7 @@ spring.cloud.gateway:
         - Method=PUT
       filters:
         - SetPath=/api/v1/authors/{authorId}/posts/{postId}
-    - id: author_get
+    - id: post_get
       uri: ${reeled.gateway.internal-services.post-service.url}
       predicates:
         - Path=/authors/{authorId}/posts/{postId}
@@ -94,12 +95,34 @@ spring.cloud.gateway:
         - Method=POST
       filters:
         - SetPath=/api/v1/authors/{authorId}/posts/metrics/search
+    - id: post_category_create
+      uri: ${reeled.gateway.internal-services.reference-service.url}
+      predicates:
+        - Path=/post-categories
+        - Method=POST
+      filters:
+        - SetPath=/api/v1/post-categories
+    - id: post_get
+      uri: ${reeled.gateway.internal-services.reference-service.url}
+      predicates:
+        - Path=/post-categories/{postCategoryKey}
+        - Method=GET
+      filters:
+        - SetPath=/api/v1/post-categories/{postCategoryKey}
+    - id: post_get_all
+      uri: ${reeled.gateway.internal-services.reference-service.url}
+      predicates:
+        - Path=/post-categories
+        - Method=GET
+      filters:
+        - SetPath=/api/v1/post-categories
 
 # API documentation
 reeled.gateway.openapi.internal-services.urls:
   - ${reeled.gateway.internal-services.author-service.url}/v3/api-docs
   - ${reeled.gateway.internal-services.post-service.url}/v3/api-docs
   - ${reeled.gateway.internal-services.post-metrics-service.url}/v3/api-docs
+  - ${reeled.gateway.internal-services.reference-service.url}/v3/api-docs
 
 springdoc:
   api-docs.enabled: true

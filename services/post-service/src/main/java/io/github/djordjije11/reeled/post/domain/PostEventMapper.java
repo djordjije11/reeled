@@ -5,7 +5,6 @@ import io.github.djordjije11.reeled.post.event.PostUpserted;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import static io.github.djordjije11.reeled.commons.lang.MappingUtils.mapToBaseEnumValue;
 import static io.github.djordjije11.reeled.commons.lang.MappingUtils.mapToEpochMilli;
 import static io.github.djordjije11.reeled.commons.lang.MappingUtils.mapToNanos;
 
@@ -18,7 +17,7 @@ final class PostEventMapper {
     static PostUpserted mapToPostUpserted(Post post) {
         return PostUpserted.newBuilder()
                 .setAuthorId(post.getAuthorId())
-                .setCategory(mapToBaseEnumValue(post.getCategory()))
+                .setCategoryKey(post.getCategoryKey())
                 .setDescription(post.getDescription())
                 .setDuration(mapToNanos(post.getDuration()))
                 .setId(post.getId())
