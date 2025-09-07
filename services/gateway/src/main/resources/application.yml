@@ -81,14 +81,14 @@ spring.cloud.gateway:
         - Method=DELETE
       filters:
         - SetPath=/api/v1/authors/{authorId}/posts/{postId}
-    - id: posts_metrics_import
+    - id: post_metrics_import
       uri: ${reeled.gateway.internal-services.post-metrics-service.url}
       predicates:
         - Path=/posts/metrics/import
         - Method=POST
       filters:
         - SetPath=/api/v1/posts/metrics/import
-    - id: posts_metrics_search
+    - id: post_metrics_search
       uri: ${reeled.gateway.internal-services.post-metrics-service.url}
       predicates:
         - Path=/authors/{authorId}/posts/metrics/search
@@ -102,14 +102,14 @@ spring.cloud.gateway:
         - Method=POST
       filters:
         - SetPath=/api/v1/post-categories
-    - id: post_get
+    - id: post_category_get
       uri: ${reeled.gateway.internal-services.reference-service.url}
       predicates:
         - Path=/post-categories/{postCategoryKey}
         - Method=GET
       filters:
         - SetPath=/api/v1/post-categories/{postCategoryKey}
-    - id: post_get_all
+    - id: post_category_get_all
       uri: ${reeled.gateway.internal-services.reference-service.url}
       predicates:
         - Path=/post-categories
