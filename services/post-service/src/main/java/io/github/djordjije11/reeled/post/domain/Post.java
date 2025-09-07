@@ -78,7 +78,7 @@ public class Post extends AbstractAggregateRoot<Post> {
     }
 
     public void update(String categoryKey, String description, String title, PostCategoryService postCategoryService) {
-        Assert.notNull(categoryKey, "categoryKey must not be null");
+        Assert.hasText(categoryKey, "categoryKey must be provided");
         Assert.hasText(title, "title must not be empty");
         Assert.notNull(postCategoryService, "postCategoryService must not be null");
 
