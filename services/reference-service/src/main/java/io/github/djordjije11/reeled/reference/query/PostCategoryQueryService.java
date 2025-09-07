@@ -4,7 +4,7 @@ import io.github.djordjije11.reeled.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Djordjije Radovic
@@ -15,7 +15,7 @@ public class PostCategoryQueryService {
 
     private final PostCategoryQueryRepository postCategoryQueryRepository;
 
-    public List<PostCategoryProjection> getAll() {
+    public Set<PostCategoryProjection> getAll() {
         return postCategoryQueryRepository.findAll();
     }
 

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Djordjije Radovic
@@ -52,7 +52,7 @@ public class PostCategoryController {
     @GetMapping
     @Operation(description = "Returns all post categories")
     @ApiResponse(responseCode = "200")
-    public ResponseEntity<List<PostCategoryProjection>> get() {
+    public ResponseEntity<Set<PostCategoryProjection>> get() {
         return ResponseEntity.ok(postCategoryQueryService.getAll());
     }
 }

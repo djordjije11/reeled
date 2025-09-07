@@ -116,6 +116,13 @@ spring.cloud.gateway:
         - Method=GET
       filters:
         - SetPath=/api/v1/post-categories
+    - id: author_type_get_all
+      uri: ${reeled.gateway.internal-services.reference-service.url}
+      predicates:
+        - Path=/author-types
+        - Method=GET
+      filters:
+        - SetPath=/api/v1/author-types
 
 # API documentation
 reeled.gateway.openapi.internal-services.urls:
