@@ -95,7 +95,7 @@
                 <constraints primaryKey="true" primaryKeyName="pk_post"/>
             </column>
             <column name="author_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_post_author" references="author(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_post_author" references="author(id)" deleteCascade="true"/>
             </column>
             <column name="category_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_post_post_category" references="post_category(id)"/>
