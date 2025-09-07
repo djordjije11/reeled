@@ -42,6 +42,10 @@ spring.data.jpa.repositories.bootstrap-mode: default
 reeled.shared.infra.schedule:
   stored-event-scheduler.enabled: true
 
+reeled.cloud.stream.post-event-handler.enabled: true
+
+spring.cloud.function.definition: "postAuthorEventHandler"
+
 spring.cloud.stream:
   default:
     producer:
@@ -50,6 +54,9 @@ spring.cloud.stream:
     consumer.useNativeDecoding: true
   function.autodetect: false
   bindings:
+    postAuthorEventHandler-in-0:
+      destination: ${reeled.resource.prefix}-author-event
+      group: ${reeled.resource.prefix}-post
     postPostEventSource-out-0:
       destination: ${reeled.resource.prefix}-post-event
   kafka:

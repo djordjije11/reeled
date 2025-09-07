@@ -94,6 +94,22 @@ public class PostService {
         logger.info("Post successfully updated (id: {}, authorId: {})", id, authorId);
     }
 
+    public void deleteAllByAuthorId(Long authorId) {
+        Assert.notNull(authorId, "authorId must not be null");
+
+        logger.info("Deleting all posts by author (authorId: {})...", authorId);
+
+        postSupportRepository.findAllIdsByAuthorIdAndDeletedIsFalse(authorId).forEach(id -> {
+            try {
+                dataAccessRetry.executeRunnable(() -> delete(id, authorId));
+            } catch (RuntimeException e) {
+                logger.error("Error occurred while deleting a post (id: {}, authorId: {})", id, authorId, e);
+            }
+        });
+
+        logger.info("All posts by author successfully deleted (authorId: {})", authorId);
+    }
+
     @Retry(name = DATA_ACCESS_RETRY_NAME)
     public void delete(Long id, Long authorId) {
         Assert.notNull(id, "id must not be null");

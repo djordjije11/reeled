@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface PostSupportRepository extends Repository<Post, Long> {
 
+    List<Long> findAllIdsByAuthorIdAndDeletedIsFalse(Long authorId);
+
     @Query("SELECT id FROM Post WHERE deleted = TRUE AND deletedDate < :purgeAgeThreshold ORDER BY id LIMIT :limit")
     List<Long> findAllIdsEligibleForPurge(ZonedDateTime purgeAgeThreshold, int limit);
 }
