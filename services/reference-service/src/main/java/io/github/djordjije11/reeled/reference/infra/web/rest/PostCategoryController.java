@@ -25,7 +25,7 @@ import java.util.Set;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/post-categories")
+@RequestMapping("/api/v1")
 @Tag(name = "Post Category")
 @Validated
 public class PostCategoryController {
@@ -34,7 +34,7 @@ public class PostCategoryController {
 
     private final PostCategoryQueryService postCategoryQueryService;
 
-    @PostMapping
+    @PostMapping("/post-categories")
     @Operation(description = "Creates a post category")
     @ApiResponse(responseCode = "201", description = "Post category created")
     public ResponseEntity<Void> create(@RequestBody @Valid PostCategoryCreateDto postCategoryCreateDto) {
@@ -42,14 +42,14 @@ public class PostCategoryController {
         return ResponseEntity.created(URI.create("/" + postCategoryCreateDto.key())).build();
     }
 
-    @GetMapping("/{postCategoryKey}")
+    @GetMapping("/post-categories/{postCategoryKey}")
     @Operation(description = "Returns a post category")
     @ApiResponse(responseCode = "200")
     public ResponseEntity<PostCategoryProjection> get(@PathVariable String postCategoryKey) {
         return ResponseEntity.ok(postCategoryQueryService.get(postCategoryKey));
     }
 
-    @GetMapping
+    @GetMapping("/post-categories")
     @Operation(description = "Returns all post categories")
     @ApiResponse(responseCode = "200")
     public ResponseEntity<Set<PostCategoryProjection>> get() {
