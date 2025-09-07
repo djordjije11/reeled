@@ -34,12 +34,14 @@ services:
       - author-service
       - post-service
       - post-metrics-service
+      - reference-service
     ports:
       - "8080:8080"
     environment:
       REELED_GATEWAY_INTERNALSERVICES_AUTHORSERVICE_URL: http://author-service:8080
       REELED_GATEWAY_INTERNALSERVICES_POSTSERVICE_URL: http://post-service:8080
       REELED_GATEWAY_INTERNALSERVICES_POSTMETRICSSERVICE_URL: http://post-metrics-service:8080
+      REELED_GATEWAY_INTERNALSERVICES_REFERENCESERVICE_URL: http://reference-service:8080
 
   author-db:
     image: postgres:16.2

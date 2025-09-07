@@ -59,7 +59,7 @@ public class Post extends AbstractAggregateRoot<Post> {
     Post(Long id, Long authorId, String categoryKey, String description, Duration duration, Boolean monetized, String title, String videoUrl) {
         Assert.notNull(id, "id must not be null");
         Assert.notNull(authorId, "authorId must not be null");
-        Assert.notNull(categoryKey, "categoryKey must not be null");
+        Assert.hasText(categoryKey, "categoryKey must be provided");
         Assert.notNull(duration, "duration must not be null");
         Assert.notNull(monetized, "monetized must not be null");
         Assert.hasText(title, "title must not be empty");
