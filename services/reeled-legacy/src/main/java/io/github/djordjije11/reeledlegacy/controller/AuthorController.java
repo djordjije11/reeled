@@ -1,5 +1,7 @@
 package io.github.djordjije11.reeledlegacy.controller;
 
+import io.github.djordjije11.reeledlegacy.dto.AuthorCreateDto;
+import io.github.djordjije11.reeledlegacy.dto.AuthorUpdateDto;
 import io.github.djordjije11.reeledlegacy.model.AuthorProjection;
 import io.github.djordjije11.reeledlegacy.service.AuthorQueryService;
 import io.github.djordjije11.reeledlegacy.service.AuthorService;

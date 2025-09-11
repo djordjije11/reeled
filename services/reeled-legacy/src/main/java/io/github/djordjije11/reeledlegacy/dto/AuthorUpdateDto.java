@@ -1,4 +1,4 @@
-package io.github.djordjije11.reeledlegacy.controller;
+package io.github.djordjije11.reeledlegacy.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

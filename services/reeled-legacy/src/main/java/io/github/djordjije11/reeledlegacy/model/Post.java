@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Duration;
@@ -21,10 +22,11 @@ import java.time.Duration;
 /**
  * @author Djordjije Radovic
  */
+@Setter
 @Getter
 @ToString
 @EqualsAndHashCode(of = "id", callSuper = false)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
 @Table(name = "post")
 public class Post {
