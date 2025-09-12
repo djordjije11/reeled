@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Duration;
-
 /**
  * @author Djordjije Radovic
  */
@@ -18,7 +16,7 @@ class ClientConfiguration {
 
     @Bean
     RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-        return restTemplateBuilder.connectTimeout(Duration.ofMillis(3000)).readTimeout(Duration.ofMillis(10000)).build();
+        return restTemplateBuilder.build();
     }
 
     @Bean

@@ -7,6 +7,8 @@
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="pk_lc_legacy_author_author_sync_entry"/>
             </column>
+            <column name="sync_status" type="VARCHAR(32)"/>
+            <column name="sync_action" type="VARCHAR(32)"/>
             <column name="name" type="VARCHAR(255)"/>
             <column name="type" type="VARCHAR(32)"/>
             <column name="bio" type="TEXT"/>
@@ -16,7 +18,21 @@
             <column name="legacy_bio" type="TEXT"/>
             <column name="legacy_image_url" type="VARCHAR(128)"/>
             <column name="is_legacy" type="BOOLEAN"/>
+            <column name="is_deleted" type="BOOLEAN"/>
             <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.25.1.1" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="shedlock">
+            <column name="name" type="VARCHAR(64)">
+                <constraints primaryKey="true" primaryKeyName="pk_shedlock"/>
+            </column>
+            <column name="lock_until" type="TIMESTAMP(3)"/>
+            <column name="locked_at" type="TIMESTAMP(3)"/>
+            <column name="locked_by" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

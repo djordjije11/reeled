@@ -12,6 +12,4 @@ public interface AuthorLegacyAuthorSyncEntryRepository extends Repository<Author
     Optional<AuthorLegacyAuthorSyncEntry> findById(Long id);
 
     void save(AuthorLegacyAuthorSyncEntry syncEntry);
-
-    void delete(AuthorLegacyAuthorSyncEntry syncEntry);
 }
