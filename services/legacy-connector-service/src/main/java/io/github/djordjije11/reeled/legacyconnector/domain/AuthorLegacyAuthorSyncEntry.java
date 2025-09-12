@@ -65,6 +65,7 @@ public class AuthorLegacyAuthorSyncEntry {
 
         this.id = id;
         this.legacyAuthorData = legacyAuthorData;
+        this.legacy = true;
 
         syncCreatedOnLegacy(authorServiceClient);
     }
@@ -87,6 +88,10 @@ public class AuthorLegacyAuthorSyncEntry {
     public void sync(LegacyAuthorData legacyAuthorData, AuthorServiceClient authorServiceClient) {
         Assert.notNull(legacyAuthorData, "legacyAuthorData must not be null");
         Assert.notNull(authorServiceClient, "authorServiceClient must not be null");
+
+        if (!legacy) {
+            return;
+        }
 
         if (legacyAuthorData.equals(this.legacyAuthorData)) {
             return;
