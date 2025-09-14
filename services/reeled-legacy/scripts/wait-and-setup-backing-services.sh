@@ -16,8 +16,7 @@ curl -L https://maven.pkg.github.com/djordjije11/reeled/io.github.djordjije11.re
  -o reeled-kafka-admin.jar
 java -jar reeled-kafka-admin.jar localhost:9092 reeledlegacy.public.post \
   reeledlegacy.public.author \
-  reeledlegacy.public.post_category \
-  reeledlegacy.transaction
+  reeledlegacy.public.post_category
 rm -rf reeled-kafka-admin.jar
 
 # Setup Debezium Postgres connector
@@ -34,7 +33,6 @@ curl -i -X POST -H "Accept: application/json" -H "Content-Type: application/json
     "database.password": "reeled_legacy_password",
     "database.server.name": "reeledlegacy",
     "table.include.list": "public.post,public.author,public.post_category",
-    "provide.transaction.metadata": "true",
     "key.converter": "io.confluent.connect.avro.AvroConverter",
     "key.converter.schema.registry.url": "http://schema-registry:8081",
     "key.converter.key.subject.name.strategy": "io.confluent.kafka.serializers.subject.TopicRecordNameStrategy",
