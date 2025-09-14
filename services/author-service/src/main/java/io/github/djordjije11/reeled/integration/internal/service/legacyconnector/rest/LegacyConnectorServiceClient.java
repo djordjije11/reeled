@@ -1,5 +1,6 @@
 package io.github.djordjije11.reeled.integration.internal.service.legacyconnector.rest;
 
+import io.github.djordjije11.reeled.commons.exception.ReeledException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,6 @@ public class LegacyConnectorServiceClient {
                 .map(URI::getPath)
                 .map(path -> path.replace("/", ""))
                 .map(Long::parseLong)
-                .orElseThrow(() -> new RuntimeException("Author id not found in response location header (response: %s)".formatted(response)));
+                .orElseThrow(() -> new ReeledException("Author id not found in response location header (response: %s)".formatted(response)));
     }
 }
