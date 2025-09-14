@@ -39,14 +39,14 @@ spring.cloud.gateway:
         - Method=DELETE
       filters:
         - SetPath=/api/v1/authors/{authorId}
-    - id: author_put_analytics-email-recipients
+    - id: author_analytics_email_recipients_update
       uri: ${reeled.gateway.internal-services.post-metrics-service.url}
       predicates:
         - Path=/authors/{authorId}/analytics-email-recipients
         - Method=PUT
       filters:
         - SetPath=/api/v1/authors/{authorId}/analytics-email-recipients
-    - id: author_get_analytics-email-recipients
+    - id: author_analytics_email_recipients_get
       uri: ${reeled.gateway.internal-services.post-metrics-service.url}
       predicates:
         - Path=/authors/{authorId}/analytics-email-recipients
