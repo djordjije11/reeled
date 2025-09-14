@@ -2,7 +2,7 @@ spring.application.name: legacy-connector-service
 
 # Deployment stage resources prefix
 reeled.resource.prefix: reeled-default
-reeled-legacy.resource.prefix: reeledlegacy-default
+reeled-legacy.resource.prefix: reeledlegacy
 
 # Application base settings
 reeled:

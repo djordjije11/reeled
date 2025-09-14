@@ -14,5 +14,5 @@ scripts/wait-for-services.sh localhost:8081
 curl -L https://maven.pkg.github.com/djordjije11/reeled/io.github.djordjije11.reeled.reeled-kafka-admin/1.0.0/reeled-kafka-admin-1.0.0.jar \
  -H "Authorization: Bearer $REELED_GH_PACKAGES_READ_TOKEN" \
  -o reeled-kafka-admin.jar
-java -jar reeled-kafka-admin.jar localhost:9092 reeled-default-post-event
+java -jar reeled-kafka-admin.jar localhost:9092 reeled-default-post-event reeled-default-author-event
 rm -rf reeled-kafka-admin.jar
