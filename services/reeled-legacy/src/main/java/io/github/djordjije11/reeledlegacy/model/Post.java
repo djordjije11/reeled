@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
@@ -18,6 +19,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Duration;
+import java.util.Set;
 
 /**
  * @author Djordjije Radovic
@@ -49,6 +51,9 @@ public class Post {
 
     @Column(name = "is_monetized")
     private boolean monetized;
+
+    @OneToMany(mappedBy = "key.post", fetch = FetchType.LAZY)
+    private Set<PostDailyPerformance> dailyPerformances;
 
     private String title;
 

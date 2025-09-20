@@ -159,6 +159,6 @@ public class PostService {
 
     private Post getPost(Long id, Long authorId) {
         return postRepository.findByIdAndAuthorIdAndDeletedIsFalse(id, authorId)
-                .orElseThrow(() -> new NotFoundException("Post does not exist (id: %d)".formatted(id)));
+                .orElseThrow(() -> new NotFoundException("Post does not exist (id: %d, authorId: %d)".formatted(id, authorId)));
     }
 }

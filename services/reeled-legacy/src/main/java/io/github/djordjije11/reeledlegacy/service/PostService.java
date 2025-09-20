@@ -39,8 +39,7 @@ public class PostService {
 
         final Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new NotFoundException("Author does not exist (id: %d)".formatted(authorId)));
-        final PostCategory category = postCategoryRepository.findById(categoryId)
-                .orElseThrow(() -> new NotFoundException("Post category does not exist (id: %d)".formatted(categoryId)));
+        final PostCategory category = getCategory(categoryId);
 
         final Post post = new Post();
         post.setAuthor(author);
@@ -56,5 +55,48 @@ public class PostService {
         logger.info("Post successfully created (id: {}, authorId: {}, title: {})", post.getId(), authorId, title);
 
         return post.getId();
+    }
+
+    public void update(Long id, Long authorId, Long categoryId, String description, String title) {
+        Assert.notNull(authorId, "authorId must not be null");
+        Assert.notNull(categoryId, "categoryId must not be null");
+        Assert.hasText(title, "title must be provided");
+
+        logger.info("Updating a post (id: {}, authorId: {})...", id, authorId);
+
+        final Post post = getPost(id, authorId);
+
+        final PostCategory category = getCategory(categoryId);
+
+        post.setCategory(category);
+        post.setDescription(description);
+        post.setTitle(title);
+
+        postRepository.save(post);
+
+        logger.info("Post successfully updated (id: {}, authorId: {})", id, authorId);
+    }
+
+    public void delete(Long id, Long authorId) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(authorId, "authorId must not be null");
+
+        logger.info("Deleting a post (id: {}, authorId: {})...", id, authorId);
+
+        final Post post = getPost(id, authorId);
+
+        postRepository.delete(post);
+
+        logger.info("Post successfully deleted (id: {}, authorId: {})", id, authorId);
+    }
+
+    private Post getPost(Long id, Long authorId) {
+        return postRepository.findByIdAndAuthorId(id, authorId)
+                .orElseThrow(() -> new NotFoundException("Post does not exist (id: %d, authorId: %d)".formatted(id, authorId)));
+    }
+
+    private PostCategory getCategory(Long categoryId) {
+        return postCategoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NotFoundException("Post category does not exist (id: %d)".formatted(categoryId)));
     }
 }

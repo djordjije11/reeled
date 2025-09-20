@@ -1,5 +1,6 @@
 package io.github.djordjije11.reeledlegacy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -47,6 +48,10 @@ public class Author {
     private String bio;
 
     private String imageUrl;
+
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AuthorAnalyticsEmailRecipient> analyticsEmailRecipients;
 
     @Version
     private Long version;

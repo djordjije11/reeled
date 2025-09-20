@@ -1,7 +1,9 @@
 package io.github.djordjije11.reeledlegacy.controller;
 
+import io.github.djordjije11.reeledlegacy.dto.AnalyticsEmailRecipientsUpdateDto;
 import io.github.djordjije11.reeledlegacy.dto.AuthorCreateDto;
 import io.github.djordjije11.reeledlegacy.dto.AuthorUpdateDto;
+import io.github.djordjije11.reeledlegacy.model.AuthorAnalyticsEmailRecipientsProjection;
 import io.github.djordjije11.reeledlegacy.model.AuthorProjection;
 import io.github.djordjije11.reeledlegacy.service.AuthorQueryService;
 import io.github.djordjije11.reeledlegacy.service.AuthorService;
@@ -66,5 +68,26 @@ public class AuthorController {
     @ApiResponse(responseCode = "200")
     public ResponseEntity<AuthorProjection> get(@PathVariable Long authorId) {
         return ResponseEntity.ok(authorQueryService.get(authorId));
+    }
+
+    @GetMapping("/{authorId}/analytics-email-recipients")
+    @Operation(description = "Returns analytics email recipients for an author")
+    @ApiResponse(responseCode = "200", description = "Author analytics email recipients returned")
+    public ResponseEntity<AuthorAnalyticsEmailRecipientsProjection> getAnalyticsEmailRecipients(@PathVariable Long authorId) {
+        return ResponseEntity.ok(authorQueryService.getAnalyticsEmailRecipients(authorId));
+    }
+
+    @PutMapping("/{authorId}/analytics-email-recipients")
+    @Operation(description = "Updates author analytics email recipients")
+    @ApiResponse(responseCode = "204", description = "Author analytics email recipients updated")
+    public ResponseEntity<Void> updateAnalyticsEmailRecipients(@PathVariable Long authorId,
+                                                               @RequestBody @Valid AnalyticsEmailRecipientsUpdateDto analyticsEmailRecipientsUpdateDto) {
+        authorService.updateAnalyticsEmailRecipients(authorId,
+                analyticsEmailRecipientsUpdateDto.analyticsEmailRecipients()
+                        .stream()
+                        .map(AnalyticsEmailRecipientsUpdateDto.AnalyticsEmailRecipientDto::email)
+                        .toList());
+
+        return ResponseEntity.noContent().build();
     }
 }

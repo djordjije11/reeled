@@ -3,7 +3,7 @@ package io.github.djordjije11.reeledlegacy.commons.exception;
 /**
  * @author Djordjije Radovic
  */
-public class NotFoundException extends ReeledDomainException {
+public class NotFoundException extends ReeledException {
 
     public NotFoundException(String message) {
         super(message);

@@ -17,4 +17,10 @@ public interface AuthorQueryRepository extends Repository<Author, Long> {
             FROM Author
             WHERE id = :id""")
     Optional<AuthorProjection> findById(Long id);
+
+    @Query("""
+            SELECT a
+            FROM Author a LEFT JOIN FETCH a.analyticsEmailRecipients
+            WHERE a.id = :id""")
+    Optional<Author> findAnalyticsEmailRecipientsById(Long id);
 }

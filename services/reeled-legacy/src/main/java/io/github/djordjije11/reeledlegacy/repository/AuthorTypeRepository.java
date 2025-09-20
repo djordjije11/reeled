@@ -4,6 +4,7 @@ import io.github.djordjije11.reeledlegacy.model.AuthorType;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Djordjije Radovic
@@ -11,4 +12,6 @@ import java.util.Optional;
 public interface AuthorTypeRepository extends Repository<AuthorType, Long> {
 
     Optional<AuthorType> findById(Long id);
+
+    Set<AuthorType> findAll();
 }

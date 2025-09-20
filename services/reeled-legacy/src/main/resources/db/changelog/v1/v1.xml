@@ -118,4 +118,40 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="1.24.1.7" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="author_analytics_email_recipient">
+            <column name="id" type="BIGINT" autoIncrement="true" startWith="1001">
+                <constraints primaryKey="true" primaryKeyName="pk_author_analytics_email_recipient"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_author_analytics_email_recipient_author" references="author(id)" deleteCascade="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.24.1.8" author="djordjijeradovic24@gmail.com">
+        <createTable tableName="post_daily_performance">
+            <column name="post_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_post_daily_performance_post" references="post(id)"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="search_appearances" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="views" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="post_daily_performance" columnNames="post_id, date" constraintName="pk_post_daily_performance"/>
+    </changeSet>
 </databaseChangeLog>
