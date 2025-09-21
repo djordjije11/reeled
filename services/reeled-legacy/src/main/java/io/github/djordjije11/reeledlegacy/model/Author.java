@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.YearMonth;
 import java.util.Set;
 
 /**
@@ -52,6 +53,8 @@ public class Author {
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AuthorAnalyticsEmailRecipient> analyticsEmailRecipients;
+
+    private YearMonth analyticsMonthlyReportLastProcessedPeriod;
 
     @Version
     private Long version;

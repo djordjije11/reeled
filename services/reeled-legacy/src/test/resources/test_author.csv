@@ -1,0 +1,11 @@
+id,name,type,bio,image_url
+1,Author 1,personal,Bio for author 1,https://images.platform/authors/1.jpg
+2,Author 2,business,Bio for author 2,https://images.platform/authors/2.jpg
+3,Author 3,business,Bio for author 3,https://images.platform/authors/3.jpg
+4,Author 4,business,Bio for author 4,https://images.platform/authors/4.jpg
+5,Author 5,business,Bio for author 5,https://images.platform/authors/5.jpg
+6,Author 6,business,Bio for author 6,https://images.platform/authors/6.jpg
+7,Author 7,business,Bio for author 7,https://images.platform/authors/7.jpg
+8,Author 8,business,Bio for author 8,https://images.platform/authors/8.jpg
+9,Author 9,business,Bio for author 9,https://images.platform/authors/9.jpg
+10,Author 10,personal,Bio for author 10,https://images.platform/authors/10.jpg

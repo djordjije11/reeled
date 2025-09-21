@@ -39,8 +39,8 @@ spring.liquibase.change-log: classpath:db/changelog/master.xml
 spring.data.jpa.repositories.bootstrap-mode: default
 
 # Schedule
-reeledlegacy.post.infra.schedule:
-  post-purge.cron: "0 0 1 * * ?"
+reeledlegacy.scheduler:
+  author-analytics-monthly-reports-process.cron: "0 0 1 * * ?"
 
 # Scheduling configuration
 spring.task.scheduling:

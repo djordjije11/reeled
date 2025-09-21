@@ -83,6 +83,7 @@
             </column>
             <column name="bio" type="TEXT"/>
             <column name="image_url" type="VARCHAR(128)"/>
+            <column name="analytics_monthly_report_last_processed_period" type="DATE"/>
             <column name="version" type="BIGINT" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>

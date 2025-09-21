@@ -17,6 +17,7 @@ import lombok.ToString;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.time.YearMonth;
 import java.util.Collections;
@@ -108,8 +109,11 @@ public class Author {
                             period));
         }
 
-        final AuthorAnalyticsMonthlyReportNotificationDto reportNotification = createAnalyticsMonthlyReportNotification(period, analyticsQueryServiceClient);
-        emailNotificationServiceClient.sendAuthorAnalyticsMonthlyReportNotification(reportNotification);
+        if (!CollectionUtils.isEmpty(analyticsEmailRecipients)) {
+            final AuthorAnalyticsMonthlyReportNotificationDto reportNotification = createAnalyticsMonthlyReportNotification(period,
+                    analyticsQueryServiceClient);
+            emailNotificationServiceClient.sendAuthorAnalyticsMonthlyReportNotification(reportNotification);
+        }
 
         analyticsMonthlyReportLastProcessedPeriod = period;
     }
