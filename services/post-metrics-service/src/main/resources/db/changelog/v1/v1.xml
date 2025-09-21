@@ -121,4 +121,18 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="1.25.1.5" author="djordjijeradovic24@gmail.com">
+        <createIndex tableName="pm_post_daily_performance_aggregation" indexName="idx_pm_pdpa_author_id_date_category_key">
+            <column name="author_id"/>
+            <column name="date"/>
+            <column name="category_key"/>
+        </createIndex>
+
+        <createIndex tableName="pm_post_daily_performance_aggregation" indexName="idx_pm_pdpa_author_id_date_duration">
+            <column name="post_id"/>
+            <column name="date"/>
+            <column name="duration"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

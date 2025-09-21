@@ -30,7 +30,7 @@ public interface PostDailyPerformanceQueryRepository extends Repository<PostDail
                 AND pdp.key.date < :dateTo
                 AND ((:durationFrom) IS NULL OR p.duration >= :durationFrom)
                 AND ((:durationTo) IS NULL OR p.duration < :durationTo)
-                AND ((:categoryKeys) IS NULL OR p.category.id IN :categoryIds)
+                AND ((:categoryIds) IS NULL OR p.category.id IN :categoryIds)
                 AND ((:monetized) IS NULL OR p.monetized = :monetized)
             GROUP BY pdp.key.date
             ORDER BY pdp.key.date""")

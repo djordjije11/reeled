@@ -52,7 +52,8 @@ public class Post {
     @Column(name = "is_monetized")
     private boolean monetized;
 
-    @OneToMany(mappedBy = "key.post", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
     private Set<PostDailyPerformance> dailyPerformances;
 
     private String title;
