@@ -21,8 +21,6 @@ final class PostMetricsEventMapper {
         return new PostData(postUpserted.getAuthorId(),
                 mapToString(postUpserted.getCategoryKey()),
                 mapToDuration(postUpserted.getDuration()),
-                postUpserted.getMonetized(),
-                mapToString(postUpserted.getTitle()),
-                mapToString(postUpserted.getVideoUrl()));
+                postUpserted.getMonetized());
     }
 }

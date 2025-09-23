@@ -34,19 +34,15 @@ public class PostData {
 
     private String videoUrl;
 
-    public PostData(Long authorId, String categoryKey, Duration duration, Boolean monetized, String title, String videoUrl) {
+    public PostData(Long authorId, String categoryKey, Duration duration, Boolean monetized) {
         Assert.notNull(authorId, "authorId must not be null");
         Assert.hasText(categoryKey, "categoryKey must be provided");
         Assert.notNull(duration, "duration must not be null");
         Assert.notNull(monetized, "monetized must not be null");
-        Assert.hasText(title, "title must not be empty");
-        Assert.hasText(videoUrl, "videoUrl must not be empty");
 
         this.authorId = authorId;
         this.categoryKey = categoryKey;
         this.duration = duration;
         this.monetized = monetized;
-        this.title = title;
-        this.videoUrl = videoUrl;
     }
 }
