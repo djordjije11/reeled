@@ -30,10 +30,6 @@ public class PostData {
     @Column(name = "is_monetized")
     private boolean monetized;
 
-    private String title;
-
-    private String videoUrl;
-
     public PostData(Long authorId, String categoryKey, Duration duration, Boolean monetized) {
         Assert.notNull(authorId, "authorId must not be null");
         Assert.hasText(categoryKey, "categoryKey must be provided");
