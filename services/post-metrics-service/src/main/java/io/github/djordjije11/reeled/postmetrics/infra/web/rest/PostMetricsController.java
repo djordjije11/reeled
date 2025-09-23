@@ -66,7 +66,7 @@ public class PostMetricsController {
     @PostMapping(value = "/authors/{authorId}/posts/metrics/search")
     @Operation(description = "Returns post metrics for an author")
     @ApiResponse(responseCode = "200", description = "Post metrics for an author returned")
-    public ResponseEntity<List<PostDailyMetricsProjection>> getMetrics(@PathVariable Long authorId, @Valid @RequestBody PostMetricsSearchDto searchDto) {
+    public ResponseEntity<List<PostDailyMetricsProjection>> searchMetrics(@PathVariable Long authorId, @Valid @RequestBody PostMetricsSearchDto searchDto) {
         return ResponseEntity.ok(postMetricsQueryService.search(authorId,
                 searchDto.query().dateFrom(),
                 searchDto.query().dateTo(),
